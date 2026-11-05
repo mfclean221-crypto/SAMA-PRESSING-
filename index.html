@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sama Pressing | Gestion de Pressing & Entretien de Machines à Laver</title>
+  <meta name="description"
+    content="Sama Pressing : L'application mobile n°1 au Sénégal pour gérer votre pressing à distance, dicter vos factures en français et en wolof, suivre vos bénéfices réels et trouver des techniciens d'entretien pour vos machines à laver.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Filtre pour les avertissements informatifs du CDN Tailwind -->
+  <script>
+    (function() {
+      const _warn = console.warn;
+      console.warn = function(...args) {
+        if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) {
+          return;
+        }
+        _warn.apply(console, args);
+      };
+    })();
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN (Chargement propre via jsDelivr sans 404 de source map) -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.js"></script>
+
+  <!-- Configuration Thème Moderne Bleu & Blanc -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              300: '#7cc7fb',
+              400: '#38a9f6',
+              500: '#0ea5e9',
+              600: '#0284c7', // Bleu principal lumineux
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#034694'  // Bleu royal profond
+            },
+            navy: {
+              900: '#0f172a',
+              950: '#090d16'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-white text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
+
+  <!-- ================= TOPBAR INFO (SÉNÉGAL, WAVE, TESTEUR PILOTE) ================= -->
+  <div class="bg-brand-950 text-white text-xs py-2 px-4 border-b border-brand-900">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
+        <span class="inline-flex items-center gap-1.5 font-bold text-brand-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Application pensée pour les pressings au Sénégal
+        </span>
+        <span class="hidden md:inline text-brand-400">|</span>
+        <span class="text-brand-100 hidden sm:inline">Paiement par <strong>Wave</strong> & <strong>Orange
+            Money</strong></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="bg-brand-800 text-brand-200 px-2.5 py-0.5 rounded-full font-semibold text-[11px]">
+          Pressing testeur : <strong>MF Clean</strong>
+        </span>
+        <a href="#tarifs" class="text-white hover:text-brand-300 underline font-bold transition-colors">
+          Essai 14 jours gratuit
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER / NAVBAR (BLEU & BLANC ÉPURÉ) ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm" id="header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+      <!-- Logo Sama Pressing -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div
+          class="w-11 h-11 rounded-2xl bg-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-600/30 group-hover:scale-105 transition-transform">
+          <i data-lucide="smartphone" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-1 leading-none">
+            <span class="text-2xl font-black tracking-tight text-brand-950">SAMA</span>
+            <span class="text-2xl font-black tracking-tight text-brand-600">PRESSING</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Gestion & Entretien de Machines à Laver</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-bold text-slate-600">
+        <a href="#comment-ca-marche" class="hover:text-brand-600 transition-colors">Comment ça marche</a>
+        <a href="#assistant-vocal" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
+          <span>Facture Vocale</span>
+          <span class="px-2 py-0.5 text-[10px] bg-brand-100 text-brand-700 rounded-full font-bold">Wolof & FR</span>
+        </a>
+        <a href="#fonctionnalites" class="hover:text-brand-600 transition-colors">Fonctionnalités</a>
+        <a href="#module-techniciens" class="hover:text-brand-600 transition-colors flex items-center gap-1">
+          <i data-lucide="wrench" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span>Entretien Machines</span>
+        </a>
+        <a href="#tarifs" class="text-brand-700 hover:text-brand-800 font-extrabold">Tarifs (4 offres)</a>
+        <a href="#faq" class="hover:text-brand-600 transition-colors">FAQ</a>
+      </nav>
+
+      <!-- Desktop Action Buttons -->
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="#assistant-vocal"
+          class="px-4 py-2.5 rounded-xl border border-brand-200 text-brand-700 bg-brand-50 hover:bg-brand-100 font-bold text-xs transition-colors flex items-center gap-1.5">
+          <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-600"></i> Démo Vocale
+        </a>
+        <button
+          class="trigger-trial-modal px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md shadow-brand-600/30 transition-all hover:scale-105 flex items-center gap-2"
+          data-plan="Essai Gratuit 14 Jours">
+          <span>Essai 14 jours</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Button -->
+      <button id="mobile-menu-toggle"
+        class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none"
+        aria-label="Menu principal">
+        <i data-lucide="menu" class="w-7 h-7"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu-drawer"
+      class="hidden lg:hidden border-t border-slate-100 bg-white px-6 py-6 shadow-2xl transition-all">
+      <div class="flex flex-col gap-4 text-base font-bold text-slate-700">
+        <a href="#comment-ca-marche" class="mobile-link hover:text-brand-600 py-1">Comment ça marche (3 étapes)</a>
+        <a href="#assistant-vocal" class="mobile-link hover:text-brand-600 py-1 flex items-center justify-between">
+          <span>Facture Vocale (Français & Wolof)</span>
+          <span class="px-2 py-0.5 text-xs bg-brand-100 text-brand-700 rounded-full font-bold">Nouveau</span>
+        </a>
+        <a href="#fonctionnalites" class="mobile-link hover:text-brand-600 py-1">Fonctionnalités de gestion</a>
+        <a href="#module-techniciens" class="mobile-link hover:text-brand-600 py-1 flex items-center gap-2">
+          <i data-lucide="wrench" class="w-4 h-4 text-brand-600"></i>
+          <span>Entretien & Réparation Machines</span>
+        </a>
+        <a href="#tarifs" class="mobile-link hover:text-brand-600 py-1 text-brand-700 font-extrabold">Tarifs (4 offres :
+          Gratuit, 9 000, 15 000, 25 000)</a>
+        <a href="#faq" class="mobile-link hover:text-brand-600 py-1">Questions fréquentes</a>
+        <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+          <button
+            class="trigger-trial-modal w-full py-3.5 rounded-xl bg-brand-600 text-white font-bold text-center shadow-lg"
+            data-plan="Essai Gratuit 14 Jours">
+            Démarrer l'essai gratuit 14 jours
+          </button>
+          <a href="https://wa.me/221770000000?text=Bonjour,%20je%20veux%20en%20savoir%20plus%20sur%20Sama%20Pressing"
+            target="_blank"
+            class="w-full py-3 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-700 font-bold text-center flex items-center justify-center gap-2 text-sm">
+            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i> Contact direct WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION (TITRE, SOUS-TITRE, BOUTON CTA, DESIGN BLEU ET BLANC) ================= -->
+  <section
+    class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-brand-50/70 via-white to-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+        <!-- Left Column: Titre, Sous-titre & CTA -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+
+          <!-- Badge -->
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-100 text-brand-800 text-xs sm:text-sm font-bold border border-brand-200 shadow-sm">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-brand-600 animate-ping"></span>
+            <span>Gestion & Entretien de Machines à Laver au Sénégal</span>
+          </div>
+
+          <!-- Titre Principal -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
+            Gérez votre pressing depuis votre téléphone. <span
+              class="text-brand-600 underline decoration-brand-300 decoration-wavy decoration-2">Gardez vos machines au
+              top.</span>
+          </h1>
+
+          <!-- Sous-titre -->
+          <p class="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            Fini les pertes sur les carnets papier et les commandes oubliées ! <strong>Sama Pressing</strong> vous donne
+            une vue totale à distance sur vos bénéfices réels, permet de créer vos factures à la voix en français et
+            wolof, et vous met en relation avec des techniciens qualifiés pour entretenir vos machines à laver.
+          </p>
+
+          <!-- Boutons CTA -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <button
+              class="trigger-trial-modal w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-base shadow-xl shadow-brand-600/30 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3"
+              data-plan="Essai Gratuit 14 Jours">
+              <i data-lucide="play-circle" class="w-5 h-5"></i>
+              <span>Démarrer l'essai gratuit (14 jours)</span>
+            </button>
+            <a href="#comment-ca-marche"
+              class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-slate-200 hover:border-brand-600 text-slate-700 hover:text-brand-600 font-bold text-base shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+              <i data-lucide="help-circle" class="w-5 h-5 text-brand-600"></i>
+              <span>Comment ça marche ?</span>
+            </a>
+          </div>
+
+          <!-- Éléments de rassurance -->
+          <div
+            class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs font-semibold text-slate-600">
+            <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+              14 jours d'essai sans engagement</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+              Facturation vocale Wolof & Français</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+              Paiement Wave & Orange Money</span>
+          </div>
+
+          <!-- Social Proof Avatars & Confiance -->
+          <div class="pt-4 flex items-center justify-center lg:justify-start gap-4">
+            <div class="flex -space-x-3 overflow-hidden">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80"
+                alt="Utilisateur pressing">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80"
+                alt="Utilisateur pressing">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
+                src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?auto=format&fit=crop&w=120&h=120&q=80"
+                alt="Utilisateur pressing">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
+                src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=120&h=120&q=80"
+                alt="Utilisateur pressing">
+            </div>
+            <div class="text-left">
+              <div class="flex items-center text-amber-400 text-xs font-bold">
+                ★★★★★ <span class="text-slate-800 ml-1">4.9 / 5</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium">Recommandé par les pressings & buanderies du Sénégal</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Mockup Téléphone Responsive (Dashboard Propriétaire MF Clean) -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="w-full max-w-[340px] phone-frame">
+            <div class="phone-notch"></div>
+
+            <div class="pt-8 pb-6 px-4 bg-slate-50 min-h-[580px] flex flex-col justify-between">
+
+              <!-- Dashboard Header -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 pt-1">
+                  <div>
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pressing Pilote : MF
+                      Clean</div>
+                    <div class="text-sm font-extrabold text-slate-900">Tableau de bord Propriétaire</div>
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-extrabold bg-emerald-100 text-emerald-700 rounded-full">En
+                    direct</span>
+                </div>
+
+                <!-- Big Profit Card -->
+                <div class="bg-gradient-to-br from-brand-600 to-brand-700 text-white p-4 rounded-2xl shadow-md">
+                  <div class="flex justify-between items-start">
+                    <span class="text-[11px] font-medium text-brand-100">Bénéfice net (7 derniers jours)</span>
+                    <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">+24.5%</span>
+                  </div>
+                  <div class="text-2xl font-black mt-1">162 500 <span
+                      class="text-xs font-normal text-brand-200">FCFA</span></div>
+
+                  <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-brand-500/60 text-xs">
+                    <div>
+                      <span class="text-[10px] text-brand-200 block">Revenus encaissés</span>
+                      <strong class="text-white font-bold">228 000 F</strong>
+                    </div>
+                    <div>
+                      <span class="text-[10px] text-brand-200 block">Dépenses (lessive, eau)</span>
+                      <strong class="text-brand-100 font-bold">65 500 F</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Alertes Commandes à Rendre (Section 4.5) -->
+                <div class="space-y-2">
+                  <div class="text-[11px] font-bold text-slate-600 uppercase flex items-center justify-between">
+                    <span>Commandes urgentes</span>
+                    <span class="text-rose-600 text-[10px] font-bold">2 à rendre auj.</span>
+                  </div>
+
+                  <!-- Item 1 -->
+                  <div
+                    class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                        !
+                      </div>
+                      <div>
+                        <div class="font-bold text-slate-900 text-xs">Awa Diop (2 costumes)</div>
+                        <div class="text-[10px] text-rose-600 font-semibold">À rendre Aujourd'hui (Express)</div>
+                      </div>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-50 text-emerald-700 font-bold rounded text-[10px]">4 000 F</span>
+                  </div>
+
+                  <!-- Item 2 -->
+                  <div
+                    class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+                        ✓
+                      </div>
+                      <div>
+                        <div class="font-bold text-slate-900 text-xs">Modou Fall (Couette + Boubou)</div>
+                        <div class="text-[10px] text-slate-500">Prête · Retrait demain</div>
+                      </div>
+                    </div>
+                    <span class="px-2 py-1 bg-slate-100 text-slate-700 font-bold rounded text-[10px]">4 500 F</span>
+                  </div>
+                </div>
+
+                <!-- Alerte Stock Faible (Section 4.8) -->
+                <div
+                  class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600"></i>
+                    <span class="text-[11px] font-semibold text-amber-900">Stock Lessive liquide : 2L restants</span>
+                  </div>
+                  <span class="text-[10px] font-bold bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded">Alerte</span>
+                </div>
+              </div>
+
+              <!-- Quick Voice Button in Phone -->
+              <div class="pt-3">
+                <a href="#assistant-vocal"
+                  class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md">
+                  <i data-lucide="mic" class="w-4 h-4 animate-pulse"></i>
+                  <span>Créer une facture à la voix (FR / Wolof)</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION : COMMENT ÇA MARCHE EN 3 ÉTAPES AVEC ICÔNES ================= -->
+  <section id="comment-ca-marche" class="py-20 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
+          Prise en main en 2 minutes
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">
+          Comment ça marche ? En trois étapes simples
+        </h2>
+        <p class="text-slate-600 mt-3 text-base sm:text-lg">
+          L'application a été pensée pour les employés et propriétaires de pressing : de gros boutons tactiles, une
+          saisie ultra rapide et un fonctionnement même avec une connexion internet lente.
+        </p>
+      </div>
+
+      <!-- 3 Steps Grid avec Icônes et Photos immersives -->
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Étape 1 -->
+        <div
+          class="card-hover relative bg-brand-50/60 hover:bg-white rounded-3xl p-6 sm:p-7 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl group flex flex-col justify-between overflow-hidden">
+          <div>
+            <div class="relative h-44 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=600&q=80"
+                alt="Repassage et soin des boubous, bazins et linge au Sénégal"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-lg">
+                  <i data-lucide="mic" class="w-5 h-5"></i>
+                </div>
+                <span class="text-white text-xs font-bold drop-shadow">Saisie vocale & tarifs</span>
+              </div>
+              <div
+                class="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-xs font-black text-brand-900">
+                Étape 01
+              </div>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">1. Configurez vos tarifs & dictez vos factures</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Fixez vos prix au kilo ou à la pièce (ex: lavage 800 F/kg, costume 2 000 F). Au comptoir, l'employé dicte
+              la
+              commande en <strong>français ou en wolof</strong>. L'application calcule le montant et envoie la facture
+              au
+              client par WhatsApp en 1 clic.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-brand-100 flex items-center gap-2 text-xs font-bold text-brand-700">
+            <i data-lucide="check" class="w-4 h-4"></i> Commande enregistrée en moins d'une minute
+          </div>
+        </div>
+
+        <!-- Étape 2 -->
+        <div
+          class="card-hover relative bg-brand-50/60 hover:bg-white rounded-3xl p-6 sm:p-7 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl group flex flex-col justify-between overflow-hidden">
+          <div>
+            <div class="relative h-44 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
+                alt="Propriétaire de pressing au Sénégal pilotant son activité à distance"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-lg">
+                  <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                </div>
+                <span class="text-white text-xs font-bold drop-shadow">Pilotage en temps réel</span>
+              </div>
+              <div
+                class="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-xs font-black text-brand-900">
+                Étape 02
+              </div>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">2. Suivez vos bénéfices & alertes à distance</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Même loin de votre atelier, consultez sur votre smartphone vos <strong>recettes réelles, vos dépenses et
+                votre marge nette</strong>. Les alertes automatiques préviennent vos employés des commandes à rendre
+              aujourd'hui pour éviter tout retard.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-brand-100 flex items-center gap-2 text-xs font-bold text-brand-700">
+            <i data-lucide="check" class="w-4 h-4"></i> Les employés ne voient pas vos bénéfices
+          </div>
+        </div>
+
+        <!-- Étape 3 -->
+        <div
+          class="card-hover relative bg-brand-50/60 hover:bg-white rounded-3xl p-6 sm:p-7 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl group flex flex-col justify-between overflow-hidden">
+          <div>
+            <div class="relative h-44 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80"
+                alt="Technicien qualifié réparant une machine à laver professionnelle"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-lg">
+                  <i data-lucide="wrench" class="w-5 h-5"></i>
+                </div>
+                <span class="text-white text-xs font-bold drop-shadow">Maintenance & Lave-linge</span>
+              </div>
+              <div
+                class="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-xs font-black text-brand-900">
+                Étape 03
+              </div>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">3. Entretenez vos machines & développez votre
+              clientèle</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              En cas de panne de lave-linge, trouvez immédiatement un <strong>technicien vérifié dans votre
+                quartier</strong> (Samsung, LG, Bosch). Relancez vos clients fidèles absents depuis 30 jours et envoyez
+              des promos groupées en un clic.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-brand-100 flex items-center gap-2 text-xs font-bold text-brand-700">
+            <i data-lucide="check" class="w-4 h-4"></i> Mode urgence pour ne jamais stopper l'activité
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick CTA Button -->
+      <div class="mt-12 text-center">
+        <button
+          class="trigger-trial-modal inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-lg shadow-brand-600/25 transition-all"
+          data-plan="Essai Gratuit 14 Jours">
+          <span>Commencer l'essai gratuit pendant 14 jours</span>
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : DÉMO ASSISTANT VOCAL (FRANÇAIS & WOLOF) ================= -->
+  <section id="assistant-vocal" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+        <!-- Left: Présentation Vocale -->
+        <div class="lg:col-span-6 space-y-6">
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-400/30 text-xs font-bold">
+            <i data-lucide="mic" class="w-4 h-4"></i> Facturation Vocale Intelligente
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight">
+            Créez une facture en parlant, en Français ou en Wolof.
+          </h2>
+
+          <p class="text-slate-300 text-base leading-relaxed">
+            Vos employés n'ont plus à taper chaque nom d'article sur un clavier. Il leur suffit de parler au téléphone
+            ou à l'ordinateur. Le système reconnaît le client, extrait les articles, calcule le total avec vos tarifs et
+            applique l'option express automatiquement.
+          </p>
+
+          <div class="relative h-44 rounded-2xl overflow-hidden border border-slate-700 shadow-lg">
+            <img src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?auto=format&fit=crop&w=600&q=80"
+              alt="Accueil et dictée vocale au comptoir de pressing à Dakar" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-3 left-3 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-xs font-bold text-white">Prise de commande vocale en moins de 30 secondes</span>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
+                ✓</div>
+              <span class="text-sm text-slate-200">Gère les phrases mixtes wolof/français (ex: « ñaari boubous », « 3
+                kilos »)</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
+                ✓</div>
+              <span class="text-sm text-slate-200">Reconnaissance de l'urgence Express (+20%) sur simple consigne
+                vocale</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
+                ✓</div>
+              <span class="text-sm text-slate-200">Envoi immédiat du récapitulatif par WhatsApp au client</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Simulateur Vocal Interactif -->
+        <div class="lg:col-span-6 bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-2xl">
+
+          <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">Simulateur Interactif</span>
+              <h3 class="text-lg font-bold text-white">Cliquez pour tester la voix :</h3>
+            </div>
+
+            <div id="voice-soundwave-bars" class="flex items-center gap-1 opacity-0 transition-opacity">
+              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
+              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
+              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
+              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
+              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
+            </div>
+          </div>
+
+          <!-- Boutons de test de langues -->
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <button id="trigger-voice-fr"
+              class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-brand-600 text-white shadow-md transition-all flex items-center justify-center gap-2">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+              <span>Dictée en Français</span>
+            </button>
+            <button id="trigger-voice-wo"
+              class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+              <span>Dictée en Wolof</span>
+            </button>
+          </div>
+
+          <!-- Transcription vocale -->
+          <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700 mb-6">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+              <span id="voice-status-indicator">Prêt pour l'écoute...</span>
+              <span class="text-brand-400 font-semibold">Tarifs MF Clean actifs</span>
+            </div>
+            <p id="voice-quote-display" class="text-sm sm:text-base font-semibold text-white italic">
+              « Facture pour Awa Diop : 3 kilos de lavage et repassage et 2 costumes »
+            </p>
+          </div>
+
+          <!-- Facture résultante générée -->
+          <div class="bg-white text-slate-900 rounded-2xl p-5 shadow-lg">
+            <div class="flex justify-between items-start pb-3 border-b border-slate-100">
+              <div>
+                <span class="text-[10px] font-bold text-slate-400 uppercase">Facture générée automatiquement</span>
+                <div id="invoice-client-name" class="font-extrabold text-slate-900 text-sm">Awa Diop</div>
+              </div>
+              <span id="invoice-due-date"
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700">
+                À rendre : dans 2 jours (Standard)
+              </span>
+            </div>
+
+            <div id="invoice-items-container" class="my-3 space-y-1">
+              <div class="flex justify-between items-center text-xs py-1 border-b border-slate-100">
+                <span class="text-slate-600">Lavage & repassage (3 kg × 800 F)</span>
+                <span class="font-bold text-slate-900">2 400 F</span>
+              </div>
+              <div class="flex justify-between items-center text-xs py-1">
+                <span class="text-slate-600">Costume 2 pièces (2 × 2 000 F)</span>
+                <span class="font-bold text-slate-900">4 000 F</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div>
+                <div class="text-[10px] text-slate-500 font-bold uppercase">Total à payer</div>
+                <div id="invoice-total-amount" class="text-xl font-black text-brand-600">6 400 FCFA</div>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button id="open-receipt-btn"
+                  class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
+                  <i data-lucide="printer" class="w-4 h-4 text-brand-300"></i>
+                  <span>Imprimer / Reçu PDF</span>
+                </button>
+                <button id="share-invoice-whatsapp-btn"
+                  class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
+                  <i data-lucide="message-circle" class="w-4 h-4"></i>
+                  <span>WhatsApp</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : FONCTIONNALITÉS COMPLÈTES ================= -->
+  <section id="fonctionnalites" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
+          Fonctionnalités Clés
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">
+          Une boîte à outils conçue pour rentabiliser votre pressing
+        </h2>
+        <p class="text-slate-600 mt-3 text-base sm:text-lg">
+          Tous les modules indispensables pour piloter vos encaissements, vos stocks et vos équipes en toute sérénité.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Module 1: Tableau de bord & Bénéfices -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
+                alt="Entrepreneur sénégalais suivant les bénéfices de son pressing"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="pie-chart" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Finances & Recettes</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Bénéfice & Marge en grand</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Visualisez immédiatement vos recettes nettes, vos charges (eau, électricité, salaires) et votre marge réelle sans calculs fastidieux.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-lg border border-brand-100">
+              <i data-lucide="trending-up" class="w-3 h-3"></i> Chiffres fiables en direct
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 2: Alertes Délais -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=600&q=80"
+                alt="Grands boubous, bazin riche et linge sous housse protectrice"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Gestion des Délais</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Alertes Délais & Retards</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Priorités claires : En retard, Aujourd'hui, Demain. Vos employés reçoivent des rappels pour préparer boubous et couettes à temps.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">
+              <i data-lucide="clock" class="w-3 h-3"></i> Zéro litige client
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 3: Stock -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=600&q=80"
+                alt="Bidons de lessive, détachants et savons professionnels"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="package" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Consommables & Stock</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Gestion Stock Atelier</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Boutons rapides + et − pour mettre à jour les bidons de lessive, détachants bazin et cintres avec alerte automatique avant rupture.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-100">
+              <i data-lucide="alert-triangle" class="w-3 h-3"></i> Alerte seuil bas
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 4: CRM Clients & WhatsApp -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?auto=format&fit=crop&w=600&q=80"
+                alt="Accueil client chaleureux au comptoir de pressing sénégalais"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="users" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Fidélisation & WhatsApp</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Fidélisation & Relance Client</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Repérez vos meilleurs clients et relancez ceux absents depuis 30 jours avec une promotion spéciale par SMS ou WhatsApp en un clic.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
+              <i data-lucide="message-circle" class="w-3 h-3"></i> Relance WhatsApp 1 clic
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 5: Rôles & Sécurité -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=600&q=80"
+                alt="Propriétaire et équipe de pressing au travail"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Sécurité des Données</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Accès Propriétaire vs Employé</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Vos employés enregistrent les commandes sans jamais accéder à vos bénéfices, vos dépenses ou les données financières confidentielles.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+              <i data-lucide="lock" class="w-3 h-3"></i> Confidentialité garantie
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 6: Multi-plateforme -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+                alt="Synchronisation smartphone et PC de pressing"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="monitor" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Smartphone & PC</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Téléphone & Ordinateur</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Accessible sur smartphone Android, iPhone ou ordinateur de comptoir avec synchronisation en ligne et mode faible connexion.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100">
+              <i data-lucide="cloud" class="w-3 h-3"></i> Sauvegarde temps réel
+            </span>
+          </div>
+        </div>
+
+        <!-- Module 7: NOUVEAU - Générateur de Reçus & Tickets de Caisse (PDF / Impression) -->
+        <div
+          class="card-hover rounded-3xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=600&q=80"
+                alt="Ticket thermique de caisse et reçu imprimable avec QR code"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/95 backdrop-blur text-brand-700 flex items-center justify-center shadow-md">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Reçus & Tickets</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-base font-bold text-slate-900 mb-2">Reçus & Tickets de Caisse PDF</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Imprimez directement un ticket thermique au comptoir avec QR Code de retrait ou téléchargez le reçu PDF officiel pour le client.
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button id="card-receipt-trigger-btn"
+              class="w-full py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-brand-600 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors">
+              <i data-lucide="eye" class="w-3 h-3"></i> Voir le modèle de ticket
+            </button>
+          </div>
+        </div>
+
+        <!-- Module 8: NOUVEAU - Boutique & Vente de Produits de Nettoyage (Marketplace Intégrée) -->
+        <div
+          class="card-hover rounded-3xl bg-gradient-to-br from-brand-50 to-white border-2 border-brand-200 hover:border-brand-400 hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-40 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80"
+                alt="Rayons de produits de nettoyage, lessives, assouplissants et parfums textiles vendus en pressing"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div
+                class="absolute top-3 left-3 w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-md">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              </div>
+              <span class="absolute bottom-2.5 left-3 text-white text-xs font-bold drop-shadow">Boutique Nettoyage</span>
+            </div>
+            <div class="p-5">
+              <div class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold bg-brand-100 text-brand-800 mb-1.5 uppercase">
+                Spécial Sénégal
+              </div>
+              <h3 class="text-base font-bold text-slate-900 mb-2">Boutique & Vente de Produits</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Vendez vos lessives, assouplissants, détachants et parfums au comptoir. Affichez une <strong>vue nette et séparée</strong> entre revenus pressing et ventes boutique !
+              </p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-700 bg-white px-2.5 py-1 rounded-lg border border-brand-200 shadow-sm w-full justify-center">
+              <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> Comptabilité séparée & claire
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : MODULE TECHNICIENS & RÉPARATION MACHINES (SECTION 4.10) ================= -->
+  <section id="module-techniciens" class="py-20 bg-brand-50/70 border-t border-brand-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+        <!-- Info Module Techniciens -->
+        <div class="lg:col-span-5 space-y-6">
+          <span class="px-3.5 py-1.5 rounded-full bg-brand-600 text-white font-bold text-xs uppercase tracking-wider">
+            Marketplace & Entretien Machine
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+            Mise en relation avec des réparateurs de machines à laver
+          </h2>
+
+          <!-- Photo Technicien en action -->
+          <div class="relative h-48 rounded-2xl overflow-hidden shadow-md border border-brand-200">
+            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80"
+              alt="Technicien qualifié réparant une machine à laver" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+              <span class="font-bold flex items-center gap-1.5"><i data-lucide="shield-check"
+                  class="w-4 h-4 text-emerald-400"></i> Intervention rapide à domicile & en atelier</span>
+              <span class="bg-brand-600 text-[10px] font-black px-2 py-0.5 rounded-full">Dakar & Banlieue</span>
+            </div>
+          </div>
+
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Ce module relie les pressings et les particuliers à des techniciens spécialisés. Une panne de lave-linge
+            peut bloquer l'activité d'un pressing pendant plusieurs jours : Sama Pressing vous permet de trouver un
+            réparateur qualifié en urgence.
+          </p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                ✓
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm">Badge Vérifié</h4>
+                <p class="text-xs text-slate-600">Contrôle des pièces d'identité, références et compétences réelles sur
+                  les marques du marché.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                ✓
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm">Mode Urgence Pressing</h4>
+                <p class="text-xs text-slate-600">Priorité absolue accordée aux ateliers dont le tambour ou la vidange
+                  est hors-service.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                ✓
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm">Accès gratuit pour les Particuliers</h4>
+                <p class="text-xs text-slate-600">Les particuliers dont le lave-linge domestique est en panne peuvent
+                  trouver un réparateur sans frais.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a href="https://wa.me/221770000000?text=Bonjour,%20j%27ai%20besoin%20d%27un%20technicien%20pour%20ma%20machine%20%C3%A0%20laver"
+              target="_blank"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all">
+              <i data-lucide="phone-call" class="w-4 h-4"></i>
+              <span>Demander un Dépannage (WhatsApp)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Annuaire de Réparateurs Vérifiés -->
+        <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Techniciens Vérifiés à Dakar</h3>
+              <p class="text-xs text-slate-500">Filtrer par marque d'appareil :</p>
+            </div>
+
+            <!-- Filtres Marques -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <button
+                class="filter-tech-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white transition-all"
+                data-brand="all">Tous</button>
+              <button
+                class="filter-tech-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all"
+                data-brand="samsung">Samsung</button>
+              <button
+                class="filter-tech-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all"
+                data-brand="lg">LG</button>
+              <button
+                class="filter-tech-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all"
+                data-brand="bosch">Bosch</button>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+
+            <!-- Tech 1 -->
+            <div
+              class="tech-card-item p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              data-brands="samsung lg bosch">
+              <div class="flex items-center gap-3">
+                <img
+                  src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?auto=format&fit=crop&w=200&h=200&q=80"
+                  alt="Ibrahima Ba - Technicien Électroménager"
+                  class="w-14 h-14 rounded-2xl object-cover border-2 border-brand-200 shadow-sm shrink-0">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-slate-900 text-sm">Ibrahima Ba</h4>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Vérifié
+                      ✓</span>
+                  </div>
+                  <p class="text-xs text-slate-500">Spécialiste Samsung & LG · Dakar (Plateau, Fann, Médina)</p>
+                  <div class="flex items-center gap-1 text-amber-500 text-xs mt-1">
+                    ★★★★★ <span class="text-slate-600 font-bold ml-1">4.9 (42 avis)</span>
+                  </div>
+                </div>
+              </div>
+              <a href="https://wa.me/221770000000?text=Bonjour%20Ibrahima,%20contact%20via%20Sama%20Pressing"
+                target="_blank"
+                class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Contacter
+              </a>
+            </div>
+
+            <!-- Tech 2 -->
+            <div
+              class="tech-card-item p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              data-brands="bosch miele whirlpool">
+              <div class="flex items-center gap-3">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80"
+                  alt="Alioune Sarr - Réparateur machines de buanderie"
+                  class="w-14 h-14 rounded-2xl object-cover border-2 border-brand-200 shadow-sm shrink-0">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-slate-900 text-sm">Alioune Sarr</h4>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Vérifié
+                      ✓</span>
+                  </div>
+                  <p class="text-xs text-slate-500">Machines Industrielles & Bosch · Almadies, Ngor, Ouakam</p>
+                  <div class="flex items-center gap-1 text-amber-500 text-xs mt-1">
+                    ★★★★★ <span class="text-slate-600 font-bold ml-1">5.0 (28 avis)</span>
+                  </div>
+                </div>
+              </div>
+              <a href="https://wa.me/221770000000?text=Bonjour%20Alioune,%20contact%20via%20Sama%20Pressing"
+                target="_blank"
+                class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Contacter
+              </a>
+            </div>
+
+            <!-- Tech 3 -->
+            <div
+              class="tech-card-item p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              data-brands="samsung whirlpool beko">
+              <div class="flex items-center gap-3">
+                <img
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80"
+                  alt="Ousmane Diallo - Dépannage tambour et vidange"
+                  class="w-14 h-14 rounded-2xl object-cover border-2 border-brand-200 shadow-sm shrink-0">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-slate-900 text-sm">Ousmane Diallo</h4>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Vérifié
+                      ✓</span>
+                  </div>
+                  <p class="text-xs text-slate-500">Vidange, roulements, courroies · Grand Yoff, Parcelles</p>
+                  <div class="flex items-center gap-1 text-amber-500 text-xs mt-1">
+                    ★★★★★ <span class="text-slate-600 font-bold ml-1">4.8 (36 avis)</span>
+                  </div>
+                </div>
+              </div>
+              <a href="https://wa.me/221770000000?text=Bonjour%20Ousmane,%20contact%20via%20Sama%20Pressing"
+                target="_blank"
+                class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Contacter
+              </a>
+            </div>
+
+          </div>
+
+          <p class="text-center text-xs text-slate-500 pt-1">
+            Vous êtes réparateur qualifié ? <a href="#contact"
+              class="text-brand-600 font-bold hover:underline">Rejoignez l'annuaire vérifié</a>
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : TARIFS ET ABONNEMENTS AVEC QUATRE OFFRES EXACTES ================= -->
+  <!-- 9 000, 15 000, 25 000 ET VERSION GRATUITE PENDANT 14 JOURS -->
+  <section id="tarifs" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
+          Transparence & Flexibilité
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">
+          Nos 4 formules d'abonnement adaptées à votre pressing
+        </h2>
+        <p class="text-slate-600 mt-3 text-base sm:text-lg">
+          Commencez gratuitement avec l'essai de 14 jours, puis activez la formule de votre choix par
+          <strong>Wave</strong> ou <strong>Orange Money</strong>.
+        </p>
+      </div>
+
+      <!-- GRID DES QUATRE OFFRES (CONFORME À LA DEMANDE STRICTE) -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+
+        <!-- OFFRE 1 : VERSION GRATUITE PENDANT 14 JOURS -->
+        <div
+          class="card-hover rounded-3xl p-7 border-2 border-slate-200 bg-white flex flex-col justify-between hover:border-brand-300 transition-all shadow-sm">
+          <div>
+            <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 mb-3">
+              Découverte Sans Risque
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Version Gratuite</h3>
+            <p class="text-xs text-slate-500 mt-1">14 jours complets pour tester sur le terrain</p>
+
+            <div class="my-6">
+              <span class="text-4xl font-black text-slate-900">0</span>
+              <span class="text-xs font-bold text-slate-500 uppercase ml-1">FCFA</span>
+              <div class="text-xs font-semibold text-emerald-600 mt-1">Pendant 14 jours</div>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i>
+                <strong>Toutes les fonctions incluses</strong>
+              </li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i>
+                Configuration de vos tarifs réels</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Facture
+                vocale Français & Wolof</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Sans
+                carte bancaire requise</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Données
+                conservées après l'essai</li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button
+              class="trigger-trial-modal w-full py-3.5 rounded-xl border-2 border-brand-600 text-brand-600 hover:bg-brand-50 font-bold text-xs transition-colors"
+              data-plan="Version Gratuite 14 Jours">
+              Démarrer mes 14 jours
+            </button>
+          </div>
+        </div>
+
+        <!-- OFFRE 2 : 9 000 FCFA (FORMULE DÉPART) -->
+        <div
+          class="card-hover rounded-3xl p-7 border-2 border-slate-200 bg-white flex flex-col justify-between hover:border-brand-300 transition-all shadow-sm">
+          <div>
+            <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 mb-3">
+              Pressing Solo
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Formule Départ</h3>
+            <p class="text-xs text-slate-500 mt-1">L'essentiel pour un petit pressing</p>
+
+            <div class="my-6">
+              <span class="text-4xl font-black text-slate-900">9 000</span>
+              <span class="text-xs font-bold text-slate-500 uppercase ml-1">FCFA / mois</span>
+              <div class="text-xs text-slate-400 mt-1">Paiement mensuel Wave / OM</div>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Tableau de
+                bord propriétaire</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Suivi des
+                revenus & dépenses</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Calcul du
+                bénéfice net</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Fichier
+                clients et historique</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Suivi du
+                stock de produits</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> 1 compte
+                utilisateur</li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button
+              class="trigger-trial-modal w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors"
+              data-plan="Formule Départ (9 000 FCFA)">
+              Choisir Départ (9 000 F)
+            </button>
+          </div>
+        </div>
+
+        <!-- OFFRE 3 : 15 000 FCFA (FORMULE PRO) - RECOMMANDÉE -->
+        <div
+          class="card-hover rounded-3xl p-7 border-2 border-brand-600 bg-brand-50/40 relative flex flex-col justify-between shadow-xl shadow-brand-500/10">
+          <div
+            class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand-600 text-white text-[11px] font-black uppercase tracking-wider shadow-md">
+            ⭐ Formule Recommandée
+          </div>
+
+          <div>
+            <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-200 text-brand-800 mb-3">
+              Pressing Professionnel
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Formule Pro</h3>
+            <p class="text-xs text-slate-500 mt-1">Pour les pressings avec équipe et clientèle active</p>
+
+            <div class="my-6">
+              <span class="text-4xl font-black text-brand-600">15 000</span>
+              <span class="text-xs font-bold text-slate-600 uppercase ml-1">FCFA / mois</span>
+              <div class="text-xs font-semibold text-brand-700 mt-1">Rentabilisé en quelques jours</div>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-700 border-t border-brand-200/60 pt-5">
+              <li class="flex items-center gap-2 font-bold text-brand-900"><i data-lucide="check-circle-2"
+                  class="w-4 h-4 text-brand-600"></i> <strong>Tout ce qui est dans Départ + :</strong></li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>
+                <strong>Facture vocale Wolof & Français</strong>
+              </li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Alertes
+                délais pour employés</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Envoi
+                automatique WhatsApp & SMS</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>
+                <strong>Plusieurs comptes</strong> (Propriétaire & Employés)
+              </li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Campagnes
+                promos en 1 clic</li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button
+              class="trigger-trial-modal w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-lg shadow-brand-500/30 transition-all hover:scale-[1.02]"
+              data-plan="Formule Pro (15 000 FCFA)">
+              Choisir Pro (15 000 F)
+            </button>
+          </div>
+        </div>
+
+        <!-- OFFRE 4 : 25 000 FCFA (FORMULE MULTI-BOUTIQUE & BOUTIQUE NETTOYAGE) -->
+        <div
+          class="card-hover rounded-3xl p-7 border-2 border-brand-950 bg-white flex flex-col justify-between hover:border-brand-500 transition-all shadow-md relative overflow-hidden">
+          <div class="absolute -top-3.5 right-6 px-3 py-0.5 rounded-full bg-brand-950 text-white text-[10px] font-black uppercase tracking-wider shadow">
+            ⭐ E-Shop Inclus
+          </div>
+          <div>
+            <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-950 text-white mb-3">
+              Réseaux & Vente Produits
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Multi-Boutique & Vente</h3>
+            <p class="text-xs text-slate-500 mt-1">Gérez vos pressings & votre boutique de produits de nettoyage</p>
+
+            <div class="my-6">
+              <span class="text-4xl font-black text-slate-900">25 000</span>
+              <span class="text-xs font-bold text-slate-500 uppercase ml-1">FCFA / mois</span>
+              <div class="text-xs text-slate-400 mt-1">Puissance & rentabilité maximale</div>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5">
+              <li class="flex items-center gap-2 font-bold text-slate-900"><i data-lucide="check-circle-2"
+                  class="w-4 h-4 text-emerald-500"></i> <strong>Toutes les fonctions Pro incluses</strong></li>
+              <li class="flex items-center gap-2 font-bold text-brand-950 bg-brand-50 p-1.5 rounded-lg border border-brand-200">
+                <i data-lucide="shopping-bag" class="w-4 h-4 text-brand-600 shrink-0"></i>
+                <span><strong>Boutique de Produits de Nettoyage</strong> (Lessives, détachants, parfums textiles)</span>
+              </li>
+              <li class="flex items-center gap-2 font-semibold text-brand-900">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-brand-600 shrink-0"></i>
+                <span><strong>Vue nette & séparée des revenus</strong> (Gains Pressing vs Ventes Boutique)</span>
+              </li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>
+                <strong>Plusieurs pressings</strong> en 1 tableau de bord
+              </li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> <strong>SMS
+                  & WhatsApp illimités</strong></li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Accès
+                prioritaire Marketplace Techniciens</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Comptes
+                employés & support VIP 7j/7</li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button
+              class="trigger-trial-modal w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors"
+              data-plan="Formule Multi-Boutique & Vente (25 000 FCFA)">
+              Choisir Multi-Boutique (25 000 F)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bandeau Paiement Local Sécurisé -->
+      <div
+        class="mt-12 p-6 rounded-2xl bg-brand-50 border border-brand-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 text-sm">Paiement 100% Mobile Money</h4>
+            <p class="text-xs text-slate-600">Activez votre compte facilement par Wave ou Orange Money à la fin de vos
+              14 jours d'essai gratuit.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 font-bold text-xs text-slate-700">
+          <span class="px-3 py-1.5 bg-white rounded-lg border border-slate-200">Wave 🐧</span>
+          <span class="px-3 py-1.5 bg-white rounded-lg border border-slate-200">Orange Money 🍊</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : RETOUR D'EXPÉRIENCE MF CLEAN ================= -->
+  <section class="py-20 bg-brand-950 text-white relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="bg-brand-900/60 rounded-3xl p-8 sm:p-12 border border-brand-800 relative shadow-2xl">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+
+          <!-- Photo du fondateur Mouhamed (MF Clean) -->
+          <div class="relative shrink-0">
+            <img
+              src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=300&h=300&q=80"
+              alt="Mouhamed - Fondateur de MF Clean"
+              class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl object-cover shadow-2xl border-4 border-brand-400/40">
+            <div
+              class="absolute -bottom-2 -right-2 bg-emerald-500 text-white p-1.5 rounded-full shadow-lg border-2 border-brand-950">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-center md:text-left">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-800 text-brand-200 text-xs font-bold">
+              <i data-lucide="award" class="w-4 h-4 text-brand-400"></i> Pressing Pilote & Testeur Officiel
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-white">
+              « Avant, je ne savais pas précisément ce que je gagnais chaque mois. Aujourd'hui, tout est clair sur mon
+              téléphone. »
+            </h3>
+            <p class="text-sm text-brand-100 leading-relaxed italic">
+              "L'assistant vocal nous fait gagner un temps précieux au comptoir. Même en wolof, l'employé dicte la
+              commande et le client reçoit sa facture sur WhatsApp dans la minute. Et avec le module techniciens, on a
+              déjà réparé un lave-linge sans fermer l'atelier !"
+            </p>
+            <div class="pt-2">
+              <div class="font-bold text-white text-base">Mouhamed</div>
+              <div class="text-xs text-brand-300">Fondateur de MF Clean · Pressing à Dakar</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : VOIR AUX QUESTIONS ================= -->
+  <section id="faq" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
+          Réponses à vos questions
+        </span>
+        <h2 class="text-3xl font-black text-slate-900 mt-3">
+          Voir aux questions
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- FAQ 1 -->
+        <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <button type="button"
+            class="faq-toggle-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base hover:bg-slate-50">
+            <span>Comment fonctionne la version gratuite pendant 14 jours ?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
+          </button>
+          <div
+            class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Vous créez votre compte en 1 minute. Vous profitez de toutes les fonctionnalités (facture vocale, alertes
+            commandes, stock, bénéfices) sans entrer de carte bancaire. À la fin des 14 jours, vous pouvez continuer
+            avec la formule de votre choix (9 000, 15 000 ou 25 000 FCFA) par Wave ou Orange Money.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <button type="button"
+            class="faq-toggle-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base hover:bg-slate-50">
+            <span>Est-ce que mes employés peuvent voir mes bénéfices et mon argent ?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
+          </button>
+          <div
+            class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Non. L'application sépare strictement les droits : vos employés ont un compte d'accès comptoir/atelier qui
+            leur permet de saisir des commandes et de voir les dates de retrait, mais ils n'ont aucun accès aux chiffres
+            financiers, bénéfices ou dépenses.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <button type="button"
+            class="faq-toggle-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base hover:bg-slate-50">
+            <span>L'assistant vocal comprend-il vraiment le wolof ?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
+          </button>
+          <div
+            class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Oui ! Il gère le français et les phrases mixtes avec des nombres en wolof (« ñaari grands boubous », « ñetti
+            couettes ») et fait correspondre ces termes à vos tarifs de pressing configurés.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <button type="button"
+            class="faq-toggle-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base hover:bg-slate-50">
+            <span>Comment contacter un technicien pour une machine à laver en panne ?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
+          </button>
+          <div
+            class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Dans le module techniciens, vous choisissez la marque (Samsung, LG, Bosch, etc.) et votre quartier. Vous
+            avez accès à la liste des réparateurs certifiés avec leurs avis et un bouton WhatsApp pour les joindre
+            immédiatement.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION : FORMULAIRE DE CONTACT & CRÉATION COMPTE ================= -->
+  <section id="contact" class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="bg-gradient-to-br from-brand-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative">
+        <div class="text-center max-w-xl mx-auto mb-8">
+          <span
+            class="px-3.5 py-1.5 rounded-full bg-brand-500/20 text-brand-300 font-bold text-xs uppercase tracking-wider">
+            Rejoignez Sama Pressing
+          </span>
+          <h2 class="text-3xl font-black text-white mt-3">
+            Prêt à moderniser votre pressing ?
+          </h2>
+          <p class="text-xs sm:text-sm text-brand-200 mt-2">
+            Remplissez ce formulaire et démarrez dès aujourd'hui vos 14 jours d'essai sans engagement.
+          </p>
+        </div>
+
+        <form id="main-lead-form" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-brand-200 mb-1">Nom de votre Pressing *</label>
+              <input type="text" required placeholder="Ex: Pressing Moderne Dakar"
+                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-brand-200 mb-1">Votre Nom & Prénom *</label>
+              <input type="text" required placeholder="Ex: Babacar Diop"
+                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 text-sm">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-brand-200 mb-1">Numéro WhatsApp (pour l'activation) *</label>
+              <input type="tel" required placeholder="Ex: +221 77 123 45 67"
+                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-brand-200 mb-1">Quartier / Ville *</label>
+              <input type="text" required placeholder="Ex: Médina, Mermoz, Thiès..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 text-sm">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-brand-200 mb-1">Formule souhaitée</label>
+            <select
+              class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-brand-400 text-sm">
+              <option value="gratuit" selected>Version Gratuite (Essai 14 jours)</option>
+              <option value="depart">Offre Départ (9 000 FCFA / mois)</option>
+              <option value="pro">Offre Pro (15 000 FCFA / mois) - Recommandé</option>
+              <option value="multiboutique">Offre Multi-Boutique (25 000 FCFA / mois)</option>
+              <option value="technicien">Je suis un technicien réparateur</option>
+            </select>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit"
+              class="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-base shadow-lg shadow-brand-500/30 transition-all">
+              Créer mon compte & Démarrer mes 14 jours gratuits
+            </button>
+          </div>
+        </form>
+
+        <div id="contact-feedback-success"
+          class="hidden mt-6 p-6 rounded-2xl bg-slate-800/90 border-2 border-emerald-500/50 text-white space-y-4">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg shrink-0">
+              ✓
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-base">Votre compte d'essai est créé !</h4>
+              <p class="text-xs text-slate-300">Vos identifiants ont été générés. Cliquez ci-dessous pour les recevoir
+                directement sur WhatsApp :</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 text-xs space-y-2">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Identifiant :</span>
+              <span class="font-mono font-bold text-brand-400" id="bottom-generated-id">SP-2026-TEST</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Mot de passe temporaire :</span>
+              <span class="font-mono font-bold text-emerald-400" id="bottom-generated-pass">sama2026</span>
+            </div>
+          </div>
+
+          <a id="bottom-whatsapp-btn" href="#" target="_blank"
+            class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Ouvrir WhatsApp avec mes identifiants</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+
+        <div class="col-span-2">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold">
+              <i data-lucide="smartphone" class="w-4 h-4"></i>
+            </div>
+            <span class="text-xl font-black text-white">SAMA <span class="text-brand-400">PRESSING</span></span>
+          </div>
+          <p class="max-w-sm text-slate-400 leading-relaxed">
+            L'application de gestion pensée pour les pressings sénégalais : pilotage à distance, assistant vocal en français
+            et wolof, gestion de commandes et entretien de machines à laver.
+          </p>
+          <div class="mt-4 text-slate-300">
+            <span>Paiements : Wave • Orange Money</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Navigation</h4>
+          <ul class="space-y-2">
+            <li><a href="#comment-ca-marche" class="hover:text-white transition-colors">Comment ça marche</a></li>
+            <li><a href="#assistant-vocal" class="hover:text-white transition-colors">Assistant Vocal Wolof</a></li>
+            <li><a href="#fonctionnalites" class="hover:text-white transition-colors">Fonctionnalités</a></li>
+            <li><a href="#module-techniciens" class="hover:text-white transition-colors">Réparation Lave-linge</a></li>
+            <li><a href="#tarifs" class="hover:text-white transition-colors">Tarifs & 4 Offres</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Contact & Support</h4>
+          <ul class="space-y-2">
+            <li><a href="tel:+221770000000" class="hover:text-white transition-colors">Tél : +221 77 000 00 00</a></li>
+            <li><a href="https://wa.me/221770000000" class="hover:text-white transition-colors">WhatsApp Support</a>
+            </li>
+            <li><a href="mailto:contact@samapressing.sn"
+                class="hover:text-white transition-colors">contact@samapressing.sn</a></li>
+            <li><span>Dakar, Sénégal</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+        <div>
+          &copy; <span id="footer-year"></span> Sama Pressing · Tous droits réservés. Pressing pilote testeur : MF
+          Clean.
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-slate-400">Conditions Générales</a>
+          <a href="#" class="hover:text-slate-400">Protection des Données</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= MODAL D'ESSAI GRATUIT 14 JOURS ================= -->
+  <div id="modal-trial"
+    class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200">
+
+      <!-- Bouton Fermer -->
+      <button id="close-trial-btn"
+        class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-brand-100 text-brand-600 mx-auto flex items-center justify-center mb-3">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-2xl font-black text-slate-900">Activer vos 14 jours gratuits</h3>
+        <p class="text-xs text-slate-500 mt-1">Accès immédiat à toutes les fonctions de Sama Pressing</p>
+      </div>
+
+      <form id="form-trial-activation" class="space-y-4">
+        <input type="hidden" id="input-selected-plan" value="Essai Gratuit 14 Jours">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nom du Pressing *</label>
+          <input type="text" id="trial-input-pressing" required placeholder="Ex: Mon Pressing Pro"
+            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:border-brand-600 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Numéro de Téléphone (WhatsApp pour vos accès) *</label>
+          <input type="tel" id="trial-input-phone" required placeholder="Ex: +221 77 123 45 67"
+            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:border-brand-600 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ville / Quartier</label>
+          <input type="text" id="trial-input-city" placeholder="Ex: Dakar, Mermoz"
+            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:border-brand-600 focus:outline-none">
+        </div>
+
+        <button type="submit"
+          class="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-md transition-all">
+          Activer mon compte immédiatement
+        </button>
+
+        <p class="text-[11px] text-center text-slate-400">
+          Sans carte bancaire · 14 jours 100% gratuits · Annulation libre
+        </p>
+      </form>
+
+      <!-- Zone de Succès avec Affichage Immédiat des Identifiants & Envoi WhatsApp -->
+      <div id="trial-activation-success" class="hidden py-4 space-y-4 text-left">
+        <div class="text-center space-y-1">
+          <div
+            class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center font-bold text-xl shadow-sm">
+            ✓
+          </div>
+          <h4 class="text-xl font-black text-slate-900">Compte d'essai activé avec succès !</h4>
+          <p class="text-xs text-slate-600">
+            Voici vos identifiants temporaires pour tester <strong>Sama Pressing</strong> pendant 14 jours :
+          </p>
+        </div>
+
+        <!-- Carte Identifiants de Connexion -->
+        <div class="p-4 rounded-2xl bg-slate-50 border-2 border-brand-200 shadow-sm space-y-3">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-200 text-xs">
+            <span class="text-slate-500 font-semibold">Pressing :</span>
+            <strong id="display-pressing-name" class="text-brand-900 font-bold">Mon Pressing</strong>
+          </div>
+          <div class="flex justify-between items-center pb-2 border-b border-slate-200 text-xs">
+            <span class="text-slate-500 font-semibold">Identifiant / Compte :</span>
+            <span
+              class="font-mono font-black text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200 text-sm"
+              id="display-generated-id">SP-7842</span>
+          </div>
+          <div class="flex justify-between items-center pb-2 border-b border-slate-200 text-xs">
+            <span class="text-slate-500 font-semibold">Mot de passe temporaire :</span>
+            <span
+              class="font-mono font-black text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200 text-sm"
+              id="display-generated-pass">sama2026</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-semibold">Statut :</span>
+            <span class="px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700 text-[10px]">Essai 14
+              jours (Actif)</span>
+          </div>
+        </div>
+
+        <!-- Bouton Envoi WhatsApp Réel -->
+        <div class="space-y-2 pt-1">
+          <a id="btn-send-whatsapp-creds" href="#" target="_blank"
+            class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.01]">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+            <span>Ouvrir WhatsApp pour recevoir mes identifiants</span>
+          </a>
+
+          <a href="#assistant-vocal" id="btn-close-and-test"
+            class="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            <span>Tester l'Assistant Vocal & les fonctionnalités maintenant</span>
+          </a>
+        </div>
+
+        <p class="text-[11px] text-center text-slate-400">
+          💡 Vous pouvez également copier ces identifiants pour vous connecter à tout moment.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE TICKET & REÇU DE CAISSE IMPRIMABLE / PDF ================= -->
+  <div id="modal-receipt"
+    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+
+      <!-- Bouton Fermer -->
+      <button id="close-receipt-btn"
+        class="no-print absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors z-10">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="no-print pb-3 border-b border-slate-100 text-center">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 text-brand-700 font-bold text-[11px]">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i> Ticket Caisse & Reçu Officiel
+        </span>
+        <h3 class="text-base font-black text-slate-900 mt-1">Reçu de Pressing Client</h3>
+      </div>
+
+      <!-- Ticket Thermique Réel Imprimable -->
+      <div id="printable-receipt" class="my-3 p-5 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-300 font-mono text-xs text-slate-800 space-y-3 overflow-y-auto">
+
+        <!-- En-tête Pressing -->
+        <div class="text-center pb-3 border-b border-dashed border-slate-300 space-y-0.5">
+          <div class="font-black text-base tracking-tight text-slate-900">SAMA PRESSING</div>
+          <div class="text-[11px] font-bold text-slate-600">ATELIER MF CLEAN DAKAR</div>
+          <div class="text-[10px] text-slate-500">Avenue Cheikh Anta Diop · Fann / Mermoz</div>
+          <div class="text-[10px] text-slate-500">Tél : +221 77 000 00 00 / 33 800 00 00</div>
+        </div>
+
+        <!-- Détails Commande -->
+        <div class="space-y-1 text-[11px]">
+          <div class="flex justify-between">
+            <span class="text-slate-500">TICKET N° :</span>
+            <span id="receipt-ticket-number" class="font-bold text-slate-900">#SP-2026-0842</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">DATE DÉPÔT :</span>
+            <span id="receipt-date-deposit" class="font-bold text-slate-900">28/10/2026 - 10h45</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">DATE RETRAIT :</span>
+            <span id="receipt-date-due" class="font-bold text-brand-700 bg-brand-50 px-1 rounded">30/10/2026 - 18h00</span>
+          </div>
+          <div class="flex justify-between pt-1 border-t border-slate-200">
+            <span class="text-slate-500">CLIENT :</span>
+            <span id="receipt-client-name" class="font-bold text-slate-900">Awa Diop (+221 77 123 45 67)</span>
+          </div>
+        </div>
+
+        <!-- Lignes Articles -->
+        <div class="border-t border-b border-dashed border-slate-300 py-2 space-y-1 text-[11px]">
+          <div class="flex justify-between font-bold text-slate-900 pb-1 border-b border-slate-200">
+            <span>DÉSIGNATION</span>
+            <span>TOTAL</span>
+          </div>
+          <div id="receipt-items-container" class="space-y-1">
+            <div class="flex justify-between">
+              <span>Lavage & repassage (3 kg)</span>
+              <span class="font-bold">2 400 F</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Costume 2 pièces (2 pcs)</span>
+              <span class="font-bold">4 000 F</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total & Statut Paiement -->
+        <div class="space-y-1 text-[11px]">
+          <div class="flex justify-between text-sm font-black text-slate-900 pt-1">
+            <span>TOTAL À PAYER :</span>
+            <span id="receipt-total-amount" class="text-brand-600 font-black">6 400 FCFA</span>
+          </div>
+          <div class="flex justify-between items-center text-[10px] pt-1">
+            <span class="text-slate-500">MODE DE RÈGLEMENT :</span>
+            <span class="font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">Wave Mobile Money (Payé ✓)</span>
+          </div>
+        </div>
+
+        <!-- Code QR & Message de Retrait -->
+        <div class="text-center pt-3 border-t border-dashed border-slate-300 space-y-1">
+          <div class="inline-block p-1.5 bg-white border border-slate-300 rounded-lg">
+            <!-- Simulated QR Code SVG -->
+            <svg class="w-16 h-16 mx-auto text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+              <rect x="14" y="14" width="3" height="3"></rect>
+              <path d="M17 17h4v4h-4z"></path>
+              <path d="M7 7h.01M17 7h.01M7 17h.01"></path>
+            </svg>
+          </div>
+          <p class="text-[9px] text-slate-500">Présentez ce QR Code ou votre numéro de ticket au comptoir pour le retrait.</p>
+          <p class="text-[9px] font-bold text-slate-700">« Jërëjëf ! Merci pour votre confiance. »</p>
+        </div>
+
+      </div>
+
+      <!-- Actions : Imprimer, Télécharger PDF, WhatsApp -->
+      <div class="no-print pt-2 space-y-2">
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-print-receipt-action"
+            class="py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
+            <i data-lucide="printer" class="w-4 h-4 text-brand-300"></i>
+            <span>Imprimer Ticket</span>
+          </button>
+          <button id="btn-download-pdf-action"
+            class="py-3 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Télécharger PDF</span>
+          </button>
+        </div>
+        <button id="btn-share-receipt-wa"
+          class="w-full py-2.5 px-3 rounded-xl border border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-2 transition-colors">
+          <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+          <span>Envoyer le reçu par WhatsApp au client</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+
+</html>

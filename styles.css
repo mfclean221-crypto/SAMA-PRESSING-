@@ -1,0 +1,121 @@
+/* ===================================================
+   SAMA PRESSING - FEUILLE DE STYLE MODERNE BLEU & BLANC
+   Conforme aux exigences : Mobile First, Bleu & Blanc
+   =================================================== */
+
+:root {
+  --blue-primary: #0284c7;
+  --blue-dark: #034694;
+  --blue-navy: #0f172a;
+  --blue-soft: #f0f7ff;
+  --white-pure: #ffffff;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Animations d'ondes vocales pour l'assistant */
+@keyframes vocalWave {
+  0%, 100% {
+    height: 6px;
+  }
+  50% {
+    height: 26px;
+  }
+}
+
+.voice-bar {
+  animation: vocalWave 1.1s ease-in-out infinite;
+}
+
+.voice-bar:nth-child(2) { animation-delay: 0.15s; }
+.voice-bar:nth-child(3) { animation-delay: 0.30s; }
+.voice-bar:nth-child(4) { animation-delay: 0.45s; }
+.voice-bar:nth-child(5) { animation-delay: 0.60s; }
+
+/* Effet de lueur bleue subtile */
+.blue-shadow {
+  box-shadow: 0 10px 30px -5px rgba(2, 132, 199, 0.2);
+}
+
+.blue-shadow-lg {
+  box-shadow: 0 20px 40px -10px rgba(2, 132, 199, 0.28);
+}
+
+/* Mockup Téléphone Responsive */
+.phone-frame {
+  border: 9px solid #0f172a;
+  border-radius: 42px;
+  box-shadow: 0 25px 60px -15px rgba(3, 70, 148, 0.35);
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.phone-notch {
+  width: 110px;
+  height: 18px;
+  background: #0f172a;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+}
+
+/* Transitions de cartes */
+.card-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* Styles pour Impression du Reçu / Ticket thermique */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt * {
+    visibility: visible;
+  }
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #000;
+    background: #fff;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
