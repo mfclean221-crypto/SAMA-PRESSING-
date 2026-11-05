@@ -1,0 +1,9 @@
+{
+  "name": "sama-pressing",
+  "version": "1.0.0",
+  "description": "Application SaaS de gestion de pressing et entretien de machines à laver au Sénégal",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site ready'"
+  }
+}
