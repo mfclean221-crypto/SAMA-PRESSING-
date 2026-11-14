@@ -114,10 +114,6 @@
       <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 text-sm font-bold text-slate-600">
         <a href="#comment-ca-marche" class="hover:text-brand-600 transition-colors">Comment ça marche</a>
-        <a href="#assistant-vocal" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span>Facture Vocale</span>
-          <span class="px-2 py-0.5 text-[10px] bg-brand-100 text-brand-700 rounded-full font-bold">Wolof & FR</span>
-        </a>
         <a href="#fonctionnalites" class="hover:text-brand-600 transition-colors">Fonctionnalités</a>
         <a href="#module-techniciens" class="hover:text-brand-600 transition-colors flex items-center gap-1">
           <i data-lucide="wrench" class="w-3.5 h-3.5 text-brand-600"></i>
@@ -155,10 +151,6 @@
       class="hidden lg:hidden border-t border-slate-100 bg-white px-6 py-6 shadow-2xl transition-all">
       <div class="flex flex-col gap-4 text-base font-bold text-slate-700">
         <a href="#comment-ca-marche" class="mobile-link hover:text-brand-600 py-1">Comment ça marche (3 étapes)</a>
-        <a href="#assistant-vocal" class="mobile-link hover:text-brand-600 py-1 flex items-center justify-between">
-          <span>Facture Vocale (Français & Wolof)</span>
-          <span class="px-2 py-0.5 text-xs bg-brand-100 text-brand-700 rounded-full font-bold">Nouveau</span>
-        </a>
         <a href="#fonctionnalites" class="mobile-link hover:text-brand-600 py-1">Fonctionnalités de gestion</a>
         <a href="#module-techniciens" class="mobile-link hover:text-brand-600 py-1 flex items-center gap-2">
           <i data-lucide="wrench" class="w-4 h-4 text-brand-600"></i>
@@ -242,7 +234,7 @@
             <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
               14 jours d'essai sans engagement</span>
             <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
-              Facturation vocale Wolof & Français</span>
+              Personnalisation de vos tarifs en FCFA</span>
             <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
               Paiement Wave & Orange Money</span>
           </div>
@@ -364,18 +356,18 @@
                 </div>
               </div>
 
-              <!-- Quick Voice & App Button in Phone -->
+              <!-- Quick App Buttons in Phone -->
               <div class="pt-3 space-y-2">
                 <button
                   class="btn-open-app-direct-phone w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md">
                   <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                   <span>Ouvrir l'application en direct</span>
                 </button>
-                <a href="#assistant-vocal"
-                  class="w-full py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-2">
-                  <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-600 animate-pulse"></i>
-                  <span>Facture vocale (Wolof / FR)</span>
-                </a>
+                <button
+                  class="btn-open-app-direct-phone w-full py-2 rounded-xl bg-white border border-brand-200 hover:bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center gap-2">
+                  <i data-lucide="tag" class="w-3.5 h-3.5 text-brand-600"></i>
+                  <span>Gérer mes tarifs & caisse</span>
+                </button>
               </div>
 
             </div>
@@ -418,9 +410,9 @@
               <div class="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-transparent"></div>
               <div class="absolute bottom-3 left-3 flex items-center gap-2">
                 <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-lg">
-                  <i data-lucide="mic" class="w-5 h-5"></i>
+                  <i data-lucide="tag" class="w-5 h-5"></i>
                 </div>
-                <span class="text-white text-xs font-bold drop-shadow">Saisie vocale & tarifs</span>
+                <span class="text-white text-xs font-bold drop-shadow">Tarifs FCFA & Caisse</span>
               </div>
               <div
                 class="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-xs font-black text-brand-900">
@@ -428,13 +420,10 @@
               </div>
             </div>
 
-            <h3 class="text-lg font-extrabold text-slate-900 mb-2">1. Configurez vos tarifs & dictez vos factures</h3>
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">1. Configurez vos tarifs & encaissez en 3 clics</h3>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Fixez vos prix au kilo ou à la pièce (ex: lavage 800 F/kg, costume 2 000 F). Au comptoir, l'employé dicte
-              la
-              commande en <strong>français ou en wolof</strong>. L'application calcule le montant et envoie la facture
-              au
-              client par WhatsApp en 1 clic.
+              Fixez vos prix au kilo ou à la pièce (ex: lavage 800 F/kg, costume 2 000 F). Au comptoir, l'employé saisit
+              la commande rapidement sur téléphone ou tablette. L'application calcule le montant et envoie le ticket au client par WhatsApp en 1 clic.
             </p>
           </div>
           <div class="mt-4 pt-4 border-t border-brand-100 flex items-center gap-2 text-xs font-bold text-brand-700">
@@ -519,157 +508,6 @@
           <span>Commencer l'essai gratuit pendant 14 jours</span>
           <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= SECTION : DÉMO ASSISTANT VOCAL (FRANÇAIS & WOLOF) ================= -->
-  <section id="assistant-vocal" class="py-20 bg-slate-900 text-white relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-
-      <div class="grid lg:grid-cols-12 gap-12 items-center">
-
-        <!-- Left: Présentation Vocale -->
-        <div class="lg:col-span-6 space-y-6">
-          <div
-            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-400/30 text-xs font-bold">
-            <i data-lucide="mic" class="w-4 h-4"></i> Facturation Vocale Intelligente
-          </div>
-
-          <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight">
-            Créez une facture en parlant, en Français ou en Wolof.
-          </h2>
-
-          <p class="text-slate-300 text-base leading-relaxed">
-            Vos employés n'ont plus à taper chaque nom d'article sur un clavier. Il leur suffit de parler au téléphone
-            ou à l'ordinateur. Le système reconnaît le client, extrait les articles, calcule le total avec vos tarifs et
-            applique l'option express automatiquement.
-          </p>
-
-          <div class="relative h-44 rounded-2xl overflow-hidden border border-slate-700 shadow-lg">
-            <img src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?auto=format&fit=crop&w=600&q=80"
-              alt="Accueil et dictée vocale au comptoir de pressing à Dakar" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-            <div class="absolute bottom-3 left-3 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-xs font-bold text-white">Prise de commande vocale en moins de 30 secondes</span>
-            </div>
-          </div>
-
-          <div class="space-y-3 pt-2">
-            <div class="flex items-center gap-3">
-              <div
-                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
-                ✓</div>
-              <span class="text-sm text-slate-200">Gère les phrases mixtes wolof/français (ex: « ñaari boubous », « 3
-                kilos »)</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div
-                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
-                ✓</div>
-              <span class="text-sm text-slate-200">Reconnaissance de l'urgence Express (+20%) sur simple consigne
-                vocale</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div
-                class="w-6 h-6 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-xs">
-                ✓</div>
-              <span class="text-sm text-slate-200">Envoi immédiat du récapitulatif par WhatsApp au client</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Simulateur Vocal Interactif -->
-        <div class="lg:col-span-6 bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-2xl">
-
-          <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
-            <div>
-              <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">Simulateur Interactif</span>
-              <h3 class="text-lg font-bold text-white">Cliquez pour tester la voix :</h3>
-            </div>
-
-            <div id="voice-soundwave-bars" class="flex items-center gap-1 opacity-0 transition-opacity">
-              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
-              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
-              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
-              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
-              <span class="w-1 bg-brand-400 rounded-full voice-bar"></span>
-            </div>
-          </div>
-
-          <!-- Boutons de test de langues -->
-          <div class="grid grid-cols-2 gap-3 mb-6">
-            <button id="trigger-voice-fr"
-              class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-brand-600 text-white shadow-md transition-all flex items-center justify-center gap-2">
-              <i data-lucide="volume-2" class="w-4 h-4"></i>
-              <span>Dictée en Français</span>
-            </button>
-            <button id="trigger-voice-wo"
-              class="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
-              <i data-lucide="volume-2" class="w-4 h-4"></i>
-              <span>Dictée en Wolof</span>
-            </button>
-          </div>
-
-          <!-- Transcription vocale -->
-          <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700 mb-6">
-            <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
-              <span id="voice-status-indicator">Prêt pour l'écoute...</span>
-              <span class="text-brand-400 font-semibold">Tarifs MF Clean actifs</span>
-            </div>
-            <p id="voice-quote-display" class="text-sm sm:text-base font-semibold text-white italic">
-              « Facture pour Awa Diop : 3 kilos de lavage et repassage et 2 costumes »
-            </p>
-          </div>
-
-          <!-- Facture résultante générée -->
-          <div class="bg-white text-slate-900 rounded-2xl p-5 shadow-lg">
-            <div class="flex justify-between items-start pb-3 border-b border-slate-100">
-              <div>
-                <span class="text-[10px] font-bold text-slate-400 uppercase">Facture générée automatiquement</span>
-                <div id="invoice-client-name" class="font-extrabold text-slate-900 text-sm">Awa Diop</div>
-              </div>
-              <span id="invoice-due-date"
-                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700">
-                À rendre : dans 2 jours (Standard)
-              </span>
-            </div>
-
-            <div id="invoice-items-container" class="my-3 space-y-1">
-              <div class="flex justify-between items-center text-xs py-1 border-b border-slate-100">
-                <span class="text-slate-600">Lavage & repassage (3 kg × 800 F)</span>
-                <span class="font-bold text-slate-900">2 400 F</span>
-              </div>
-              <div class="flex justify-between items-center text-xs py-1">
-                <span class="text-slate-600">Costume 2 pièces (2 × 2 000 F)</span>
-                <span class="font-bold text-slate-900">4 000 F</span>
-              </div>
-            </div>
-
-            <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-              <div>
-                <div class="text-[10px] text-slate-500 font-bold uppercase">Total à payer</div>
-                <div id="invoice-total-amount" class="text-xl font-black text-brand-600">6 400 FCFA</div>
-              </div>
-              <div class="flex items-center gap-2 w-full sm:w-auto">
-                <button id="open-receipt-btn"
-                  class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
-                  <i data-lucide="printer" class="w-4 h-4 text-brand-300"></i>
-                  <span>Imprimer / Reçu PDF</span>
-                </button>
-                <button id="share-invoice-whatsapp-btn"
-                  class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
-                  <i data-lucide="message-circle" class="w-4 h-4"></i>
-                  <span>WhatsApp</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
     </div>
@@ -1214,9 +1052,8 @@
                 <strong>Toutes les fonctions incluses</strong>
               </li>
               <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i>
-                Configuration de vos tarifs réels</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Facture
-                vocale Français & Wolof</li>
+                Configuration de vos tarifs réels (FCFA)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Impression reçus & tickets thermiques</li>
               <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Sans
                 carte bancaire requise</li>
               <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Données
@@ -1299,7 +1136,7 @@
               <li class="flex items-center gap-2 font-bold text-brand-900"><i data-lucide="check-circle-2"
                   class="w-4 h-4 text-brand-600"></i> <strong>Tout ce qui est dans Départ + :</strong></li>
               <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>
-                <strong>Facture vocale Wolof & Français</strong>
+                <strong>Impression reçus & tickets thermiques</strong>
               </li>
               <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i> Alertes
                 délais pour employés</li>
@@ -1426,8 +1263,8 @@
               téléphone. »
             </h3>
             <p class="text-sm text-brand-100 leading-relaxed italic">
-              "L'assistant vocal nous fait gagner un temps précieux au comptoir. Même en wolof, l'employé dicte la
-              commande et le client reçoit sa facture sur WhatsApp dans la minute. Et avec le module techniciens, on a
+              "L'application nous fait gagner un temps précieux au comptoir. En 3 clics, l'employé enregistre la
+              commande avec nos tarifs exacts et le client reçoit sa facture sur WhatsApp dans la minute. Et avec le module techniciens, on a
               déjà réparé un lave-linge sans fermer l'atelier !"
             </p>
             <div class="pt-2">
@@ -1466,7 +1303,7 @@
           </button>
           <div
             class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Vous créez votre compte en 1 minute. Vous profitez de toutes les fonctionnalités (facture vocale, alertes
+            Vous créez votre compte en 1 minute. Vous profitez de toutes les fonctionnalités (tarifs personnalisés, alertes
             commandes, stock, bénéfices) sans entrer de carte bancaire. À la fin des 14 jours, vous pouvez continuer
             avec la formule de votre choix (9 000, 15 000 ou 25 000 FCFA) par Wave ou Orange Money.
           </div>
@@ -1491,13 +1328,12 @@
         <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
           <button type="button"
             class="faq-toggle-btn w-full px-6 py-4 text-left font-bold text-slate-900 flex justify-between items-center text-sm sm:text-base hover:bg-slate-50">
-            <span>L'assistant vocal comprend-il vraiment le wolof ?</span>
+            <span>Puis-je personnaliser librement les prix de mes articles et services ?</span>
             <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"></i>
           </button>
           <div
             class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Oui ! Il gère le français et les phrases mixtes avec des nombres en wolof (« ñaari grands boubous », « ñetti
-            couettes ») et fait correspondre ces termes à vos tarifs de pressing configurés.
+            Absolument ! Dans l'onglet « Mes Tarifs », vous fixez directement vos prix en FCFA au kilo (lavage, repassage) et à la pièce (grands boubous, bazin, costumes, couettes). Vos prix s'appliquent automatiquement à la caisse et aux tickets.
           </div>
         </div>
 
@@ -1642,8 +1478,8 @@
             <span class="text-xl font-black text-white">SAMA <span class="text-brand-400">PRESSING</span></span>
           </div>
           <p class="max-w-sm text-slate-400 leading-relaxed">
-            L'application de gestion pensée pour les pressings sénégalais : pilotage à distance, assistant vocal en français
-            et wolof, gestion de commandes et entretien de machines à laver.
+            L'application de gestion pensée pour les pressings sénégalais : pilotage à distance, tarifs personnalisés en FCFA,
+            gestion de commandes au comptoir et entretien de machines à laver.
           </p>
           <div class="mt-4 text-slate-300">
             <span>Paiements : Wave • Orange Money</span>
@@ -1654,8 +1490,7 @@
           <h4 class="font-bold text-white uppercase tracking-wider mb-3">Navigation</h4>
           <ul class="space-y-2">
             <li><a href="#comment-ca-marche" class="hover:text-white transition-colors">Comment ça marche</a></li>
-            <li><a href="#assistant-vocal" class="hover:text-white transition-colors">Assistant Vocal Wolof</a></li>
-            <li><a href="#fonctionnalites" class="hover:text-white transition-colors">Fonctionnalités</a></li>
+            <li><a href="#fonctionnalites" class="hover:text-white transition-colors">Fonctionnalités Caisse</a></li>
             <li><a href="#module-techniciens" class="hover:text-white transition-colors">Réparation Lave-linge</a></li>
             <li><a href="#tarifs" class="hover:text-white transition-colors">Tarifs & 4 Offres</a></li>
           </ul>
@@ -1753,9 +1588,9 @@
           </p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
-          <button id="btn-quick-voice-trigger" class="px-4 py-2.5 rounded-xl bg-white text-brand-900 font-black text-xs flex items-center gap-2 shadow-md hover:bg-brand-50 transition-all">
-            <i data-lucide="mic" class="w-4 h-4 text-brand-600"></i>
-            <span>Facture Vocale Wolof/FR</span>
+          <button id="btn-quick-tarifs-trigger" class="px-4 py-2.5 rounded-xl bg-white text-brand-900 font-black text-xs flex items-center gap-2 shadow-md hover:bg-brand-50 transition-all">
+            <i data-lucide="tag" class="w-4 h-4 text-emerald-600"></i>
+            <span>⚙️ Configurer mes Tarifs (FCFA)</span>
           </button>
         </div>
       </div>
@@ -1819,9 +1654,9 @@
           <i data-lucide="package" class="w-4 h-4"></i>
           <span>📦 Commandes de Linge (<span id="tab-orders-badge">6</span>)</span>
         </button>
-        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-vocal">
-          <i data-lucide="mic" class="w-4 h-4 text-brand-600"></i>
-          <span>🎙️ Facture Vocale (Wolof & FR)</span>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-tarifs">
+          <i data-lucide="tag" class="w-4 h-4 text-emerald-600"></i>
+          <span>🏷️ Mes Tarifs Pressing</span>
         </button>
         <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-stock">
           <i data-lucide="layers" class="w-4 h-4 text-amber-600"></i>
@@ -1838,10 +1673,6 @@
         <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-caisse">
           <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
           <span>💰 Caisse & Bénéfices Nets</span>
-        </button>
-        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-tarifs">
-          <i data-lucide="tag" class="w-4 h-4 text-emerald-600"></i>
-          <span>🏷️ Mes Tarifs Pressing</span>
         </button>
       </div>
 
@@ -1886,150 +1717,6 @@
         </div>
       </div>
 
-      <!-- ================= PANNEAU 2 : COMMANDE VOCALE INTELLIGENTE & CONVERSATIONNELLE ================= -->
-      <div id="panel-vocal" class="app-tab-panel hidden space-y-6">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-          <div class="max-w-3xl mx-auto text-center space-y-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
-              Assistant Vocal Conversationnel · Wolof & Français
-            </span>
-            <h3 class="text-2xl font-black text-slate-900">Saluez l'assistant : il vous répond vocalement et crée votre facture !</h3>
-            <p class="text-xs sm:text-sm text-slate-600">
-              Dites bonjour ou salamalekum. L'assistant vous salue à voix haute avec sa voix, vous demande votre linge, puis génère votre facture avec <strong>vos tarifs personnalisés</strong>.
-            </p>
-
-            <!-- Bouton Micro Principal -->
-            <div class="pt-2 pb-1">
-              <button id="btn-start-mic-listening"
-                class="w-16 h-16 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-xl shadow-rose-600/30 transition-transform hover:scale-110 mx-auto">
-                <i data-lucide="mic" class="w-8 h-8"></i>
-              </button>
-              <div id="mic-status-label" class="text-xs font-bold text-slate-500 mt-2">
-                Cliquez sur le micro ou utilisez les boutons rapides ci-dessous :
-              </div>
-            </div>
-
-            <!-- Dialogue guidé en 2 étapes (Wolof & Français) -->
-            <div class="grid sm:grid-cols-2 gap-4 text-left pt-2">
-              <!-- Colonne Wolof -->
-              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-xs text-emerald-900 flex items-center gap-1.5">
-                    <span class="text-base">🇸🇳</span> Dialogue en Wolof
-                  </span>
-                  <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">Audio Réel</span>
-                </div>
-                <div class="space-y-1.5">
-                  <button id="app-btn-saluer-wo"
-                    class="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 font-bold text-xs border border-emerald-300 flex items-center gap-2 shadow-sm transition-all">
-                    <i data-lucide="message-square" class="w-4 h-4 text-emerald-600"></i>
-                    <span>1. Saluer : « Salamalekum Sama Pressing »</span>
-                  </button>
-                  <button id="app-btn-commander-wo"
-                    class="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all">
-                    <i data-lucide="mic" class="w-4 h-4"></i>
-                    <span>2. Commande : « Modou Fall : ñaari boubous ak benn couette »</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Colonne Français -->
-              <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-extrabold text-xs text-blue-900 flex items-center gap-1.5">
-                    <span class="text-base">🇫🇷</span> Dialogue en Français
-                  </span>
-                  <span class="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-bold">Audio Réel</span>
-                </div>
-                <div class="space-y-1.5">
-                  <button id="app-btn-saluer-fr"
-                    class="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-blue-100 text-blue-900 font-bold text-xs border border-blue-300 flex items-center gap-2 shadow-sm transition-all">
-                    <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i>
-                    <span>1. Saluer : « Bonjour Sama Pressing ! »</span>
-                  </button>
-                  <button id="app-btn-commander-fr"
-                    class="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all">
-                    <i data-lucide="mic" class="w-4 h-4"></i>
-                    <span>2. Commande : « Awa Diop : 3kg de lavage et 2 costumes »</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Visualiseur Audio Vocal -->
-            <div id="app-voice-soundwave" class="flex justify-center items-end gap-1.5 h-10 pt-2 opacity-0 transition-opacity">
-              <div class="w-1.5 bg-brand-600 rounded-full h-4 animate-bounce"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-8 animate-bounce delay-75"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-10 animate-bounce delay-150"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-6 animate-bounce delay-100"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-9 animate-bounce delay-200"></div>
-            </div>
-
-            <!-- Fil de Discussion / Conversation Vocale Interactive -->
-            <div class="bg-slate-900 rounded-3xl p-5 text-left space-y-3 max-w-xl mx-auto shadow-inner border border-slate-800">
-              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>Conversation en direct avec l'Assistant</span>
-                </span>
-                <button id="btn-replay-voice-audio" class="text-[11px] font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1">
-                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                  <span>Réécouter la voix 🔊</span>
-                </button>
-              </div>
-
-              <!-- Message Utilisateur -->
-              <div id="conv-user-bubble" class="flex justify-end">
-                <div class="bg-brand-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">
-                  « Salamalekum Sama Pressing ! »
-                </div>
-              </div>
-
-              <!-- Réponse Vocale de l'Assistant -->
-              <div id="conv-assistant-bubble" class="flex justify-start items-start gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
-                  <i data-lucide="bot" class="w-4 h-4"></i>
-                </div>
-                <div class="bg-slate-800 text-slate-100 px-4 py-2.5 rounded-2xl rounded-tl-none text-xs max-w-[85%] border border-slate-700 leading-relaxed">
-                  <span id="conv-assistant-text">
-                    « Wa alaykum salam ! Nanga def ? Jàmm nga am ? Wax ma sa commande ak li nga bëgg ma facturel la tey ! »
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Facture Générée par l'Assistant Vocal -->
-            <div id="voice-generated-invoice-box" class="mt-4 p-5 rounded-2xl bg-slate-50 border-2 border-brand-200 text-left max-w-xl mx-auto space-y-3">
-              <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                <span class="text-xs font-bold text-slate-500 uppercase">Facture Créée pour :</span>
-                <span id="app-voice-client-name" class="font-black text-slate-900 text-sm">Modou Fall (+221 78 456 78 90)</span>
-              </div>
-              <div id="app-voice-items-container" class="space-y-1.5 text-xs text-slate-700">
-                <div class="flex justify-between"><span>Grand Boubou Bazin (2 pcs)</span><span class="font-bold">5 000 F</span></div>
-                <div class="flex justify-between"><span>Couette grand lit (1 pc)</span><span class="font-bold">2 500 F</span></div>
-              </div>
-              <div class="flex justify-between items-center border-t border-slate-200 pt-2 font-black text-sm">
-                <span>TOTAL CALCULÉ (Tarifs Pressing) :</span>
-                <span id="app-voice-total-amount" class="text-brand-600 text-base">7 500 FCFA</span>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2 pt-1">
-                <button id="btn-insert-voice-order"
-                  class="w-full py-3 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
-                  <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                  <span>Insérer dans les commandes</span>
-                </button>
-                <button id="btn-print-voice-order"
-                  class="w-full py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
-                  <i data-lucide="printer" class="w-4 h-4 text-brand-300"></i>
-                  <span>Imprimer le Ticket</span>
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
       <!-- ================= PANNEAU 3 : STOCK ATELIER & LESSIVE ================= -->
       <div id="panel-stock" class="app-tab-panel hidden space-y-6">
@@ -2197,7 +1884,7 @@
               </div>
               <h3 class="text-xl font-black text-slate-900">Mes Tarifs de Pressing (Prix en FCFA)</h3>
               <p class="text-xs text-slate-500">
-                Fixez librement vos prix pour chaque article. Vos tarifs personnalisés sont automatiquement appliqués à votre caisse, à vos factures vocales et à vos reçus.
+                Fixez librement vos prix pour chaque article. Vos tarifs personnalisés sont automatiquement appliqués à votre caisse, à vos commandes et à vos reçus thermiques.
               </p>
             </div>
             <button id="btn-save-all-tarifs" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-2 shadow-md transition-all self-start sm:self-auto">
