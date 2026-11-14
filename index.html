@@ -1717,6 +1717,11 @@
 
         <!-- Boutons d'Action Rapide -->
         <div class="flex items-center gap-2 sm:gap-3">
+          <button id="btn-open-tarifs-shortcut"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-colors">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-brand-400"></i>
+            <span>⚙️ Mes Tarifs</span>
+          </button>
           <button id="btn-new-order-modal-open"
             class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-brand-600/30 transition-all hover:scale-105">
             <i data-lucide="plus-circle" class="w-4 h-4"></i>
@@ -1834,6 +1839,10 @@
           <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
           <span>💰 Caisse & Bénéfices Nets</span>
         </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-tarifs">
+          <i data-lucide="tag" class="w-4 h-4 text-emerald-600"></i>
+          <span>🏷️ Mes Tarifs Pressing</span>
+        </button>
       </div>
 
       <!-- ================= PANNEAU 1 : COMMANDES & DÉPÔTS DE LINGE ================= -->
@@ -1877,64 +1886,147 @@
         </div>
       </div>
 
-      <!-- ================= PANNEAU 2 : COMMANDE VOCALE (WOLOF & FR) ================= -->
+      <!-- ================= PANNEAU 2 : COMMANDE VOCALE INTELLIGENTE & CONVERSATIONNELLE ================= -->
       <div id="panel-vocal" class="app-tab-panel hidden space-y-6">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-          <div class="max-w-2xl mx-auto text-center space-y-3">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+          <div class="max-w-3xl mx-auto text-center space-y-3">
             <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
-              Innovation Locale : Wolof & Français
+              Assistant Vocal Conversationnel · Wolof & Français
             </span>
-            <h3 class="text-2xl font-black text-slate-900">Créez vos dépôts à la voix sans toucher le clavier</h3>
+            <h3 class="text-2xl font-black text-slate-900">Saluez l'assistant : il vous répond vocalement et crée votre facture !</h3>
             <p class="text-xs sm:text-sm text-slate-600">
-              Dictez les boubous, costumes, draps ou kilos de linge. Le système convertit immédiatement votre voix en ticket avec prix en FCFA !
+              Dites bonjour ou salamalekum. L'assistant vous salue à voix haute avec sa voix, vous demande votre linge, puis génère votre facture avec <strong>vos tarifs personnalisés</strong>.
             </p>
 
-            <div class="flex flex-wrap items-center justify-center gap-3 pt-3">
-              <button id="app-btn-voice-fr" class="py-3 px-5 rounded-2xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-md hover:bg-blue-700 flex items-center gap-2">
-                <i data-lucide="mic" class="w-4 h-4"></i>
-                <span>Dicter en Français : « 3 kilos de lavage et 2 costumes pour Awa Diop »</span>
+            <!-- Bouton Micro Principal -->
+            <div class="pt-2 pb-1">
+              <button id="btn-start-mic-listening"
+                class="w-16 h-16 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-xl shadow-rose-600/30 transition-transform hover:scale-110 mx-auto">
+                <i data-lucide="mic" class="w-8 h-8"></i>
               </button>
-              <button id="app-btn-voice-wo" class="py-3 px-5 rounded-2xl font-bold text-xs sm:text-sm bg-emerald-600 text-white shadow-md hover:bg-emerald-700 flex items-center gap-2">
-                <i data-lucide="mic" class="w-4 h-4"></i>
-                <span>Degglu ci Wolof : « ñaari grands boubous ak benn couette pour Modou Fall »</span>
-              </button>
+              <div id="mic-status-label" class="text-xs font-bold text-slate-500 mt-2">
+                Cliquez sur le micro ou utilisez les boutons rapides ci-dessous :
+              </div>
             </div>
 
-            <!-- Visualiseur Audio -->
-            <div id="app-voice-soundwave" class="flex justify-center items-end gap-1.5 h-12 pt-4 opacity-0 transition-opacity">
+            <!-- Dialogue guidé en 2 étapes (Wolof & Français) -->
+            <div class="grid sm:grid-cols-2 gap-4 text-left pt-2">
+              <!-- Colonne Wolof -->
+              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="font-extrabold text-xs text-emerald-900 flex items-center gap-1.5">
+                    <span class="text-base">🇸🇳</span> Dialogue en Wolof
+                  </span>
+                  <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">Audio Réel</span>
+                </div>
+                <div class="space-y-1.5">
+                  <button id="app-btn-saluer-wo"
+                    class="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 font-bold text-xs border border-emerald-300 flex items-center gap-2 shadow-sm transition-all">
+                    <i data-lucide="message-square" class="w-4 h-4 text-emerald-600"></i>
+                    <span>1. Saluer : « Salamalekum Sama Pressing »</span>
+                  </button>
+                  <button id="app-btn-commander-wo"
+                    class="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all">
+                    <i data-lucide="mic" class="w-4 h-4"></i>
+                    <span>2. Commande : « Modou Fall : ñaari boubous ak benn couette »</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Colonne Français -->
+              <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="font-extrabold text-xs text-blue-900 flex items-center gap-1.5">
+                    <span class="text-base">🇫🇷</span> Dialogue en Français
+                  </span>
+                  <span class="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-bold">Audio Réel</span>
+                </div>
+                <div class="space-y-1.5">
+                  <button id="app-btn-saluer-fr"
+                    class="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-blue-100 text-blue-900 font-bold text-xs border border-blue-300 flex items-center gap-2 shadow-sm transition-all">
+                    <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i>
+                    <span>1. Saluer : « Bonjour Sama Pressing ! »</span>
+                  </button>
+                  <button id="app-btn-commander-fr"
+                    class="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all">
+                    <i data-lucide="mic" class="w-4 h-4"></i>
+                    <span>2. Commande : « Awa Diop : 3kg de lavage et 2 costumes »</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visualiseur Audio Vocal -->
+            <div id="app-voice-soundwave" class="flex justify-center items-end gap-1.5 h-10 pt-2 opacity-0 transition-opacity">
               <div class="w-1.5 bg-brand-600 rounded-full h-4 animate-bounce"></div>
               <div class="w-1.5 bg-brand-600 rounded-full h-8 animate-bounce delay-75"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-12 animate-bounce delay-150"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-10 animate-bounce delay-150"></div>
               <div class="w-1.5 bg-brand-600 rounded-full h-6 animate-bounce delay-100"></div>
-              <div class="w-1.5 bg-brand-600 rounded-full h-10 animate-bounce delay-200"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-9 animate-bounce delay-200"></div>
             </div>
 
-            <div id="app-voice-status-indicator" class="text-xs font-bold text-slate-500">
-              Cliquez sur un des boutons ci-dessus pour tester la reconnaissance vocale
+            <!-- Fil de Discussion / Conversation Vocale Interactive -->
+            <div class="bg-slate-900 rounded-3xl p-5 text-left space-y-3 max-w-xl mx-auto shadow-inner border border-slate-800">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>Conversation en direct avec l'Assistant</span>
+                </span>
+                <button id="btn-replay-voice-audio" class="text-[11px] font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  <span>Réécouter la voix 🔊</span>
+                </button>
+              </div>
+
+              <!-- Message Utilisateur -->
+              <div id="conv-user-bubble" class="flex justify-end">
+                <div class="bg-brand-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">
+                  « Salamalekum Sama Pressing ! »
+                </div>
+              </div>
+
+              <!-- Réponse Vocale de l'Assistant -->
+              <div id="conv-assistant-bubble" class="flex justify-start items-start gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
+                  <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div class="bg-slate-800 text-slate-100 px-4 py-2.5 rounded-2xl rounded-tl-none text-xs max-w-[85%] border border-slate-700 leading-relaxed">
+                  <span id="conv-assistant-text">
+                    « Wa alaykum salam ! Nanga def ? Jàmm nga am ? Wax ma sa commande ak li nga bëgg ma facturel la tey ! »
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <!-- Aperçu de la Facture Générée par la voix -->
-            <div class="mt-6 p-5 rounded-2xl bg-slate-50 border-2 border-brand-200 text-left max-w-lg mx-auto space-y-3">
+            <!-- Facture Générée par l'Assistant Vocal -->
+            <div id="voice-generated-invoice-box" class="mt-4 p-5 rounded-2xl bg-slate-50 border-2 border-brand-200 text-left max-w-xl mx-auto space-y-3">
               <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                <span class="text-xs font-bold text-slate-500">CLIENT DÉTECTÉ :</span>
-                <span id="app-voice-client-name" class="font-black text-slate-900 text-sm">Awa Diop</span>
+                <span class="text-xs font-bold text-slate-500 uppercase">Facture Créée pour :</span>
+                <span id="app-voice-client-name" class="font-black text-slate-900 text-sm">Modou Fall (+221 78 456 78 90)</span>
               </div>
               <div id="app-voice-items-container" class="space-y-1.5 text-xs text-slate-700">
-                <div class="flex justify-between"><span>Lavage & repassage (3 kg)</span><span class="font-bold">2 400 F</span></div>
-                <div class="flex justify-between"><span>Costume 2 pièces (2 pcs)</span><span class="font-bold">4 000 F</span></div>
+                <div class="flex justify-between"><span>Grand Boubou Bazin (2 pcs)</span><span class="font-bold">5 000 F</span></div>
+                <div class="flex justify-between"><span>Couette grand lit (1 pc)</span><span class="font-bold">2 500 F</span></div>
               </div>
               <div class="flex justify-between items-center border-t border-slate-200 pt-2 font-black text-sm">
-                <span>TOTAL CALCULÉ :</span>
-                <span id="app-voice-total-amount" class="text-brand-600 text-base">6 400 FCFA</span>
+                <span>TOTAL CALCULÉ (Tarifs Pressing) :</span>
+                <span id="app-voice-total-amount" class="text-brand-600 text-base">7 500 FCFA</span>
               </div>
 
-              <!-- Bouton pour insérer la commande vocale dans le tableau réel -->
-              <button id="btn-insert-voice-order"
-                class="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all">
-                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                <span>Insérer cette commande vocale dans la liste des commandes</span>
-              </button>
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button id="btn-insert-voice-order"
+                  class="w-full py-3 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                  <span>Insérer dans les commandes</span>
+                </button>
+                <button id="btn-print-voice-order"
+                  class="w-full py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all">
+                  <i data-lucide="printer" class="w-4 h-4 text-brand-300"></i>
+                  <span>Imprimer le Ticket</span>
+                </button>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -2095,6 +2187,70 @@
         </div>
       </div>
 
+      <!-- ================= PANNEAU 7 : MES TARIFS PRESSING (PERSONNALISATION TOTALE) ================= -->
+      <div id="panel-tarifs" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <div class="inline-block px-2.5 py-0.5 rounded text-[10px] font-extrabold bg-brand-100 text-brand-800 mb-1 uppercase">
+                Configuration Personnalisée
+              </div>
+              <h3 class="text-xl font-black text-slate-900">Mes Tarifs de Pressing (Prix en FCFA)</h3>
+              <p class="text-xs text-slate-500">
+                Fixez librement vos prix pour chaque article. Vos tarifs personnalisés sont automatiquement appliqués à votre caisse, à vos factures vocales et à vos reçus.
+              </p>
+            </div>
+            <button id="btn-save-all-tarifs" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center gap-2 shadow-md transition-all self-start sm:self-auto">
+              <i data-lucide="save" class="w-4 h-4"></i>
+              <span>Enregistrer mes tarifs</span>
+            </button>
+          </div>
+
+          <!-- Tableau / Grille des tarifs modifiables -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Article / Prestation</th>
+                  <th class="py-3 px-4">Type / Unité</th>
+                  <th class="py-3 px-4">Votre Prix Personnalisé (FCFA)</th>
+                  <th class="py-3 px-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="app-tarifs-table-body" class="divide-y divide-slate-100 font-medium">
+                <!-- Rempli dynamiquement par JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Formulaire Ajouter un nouvel article personnalisé -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <h4 class="font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-4 h-4 text-brand-600"></i>
+              <span>Ajouter un nouvel article ou service personnalisé à votre catalogue</span>
+            </h4>
+            <form id="form-add-custom-price" class="grid sm:grid-cols-12 gap-3 items-end">
+              <div class="sm:col-span-5">
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">Nom de l'article *</label>
+                <input type="text" id="input-new-article-name" required placeholder="Ex: Tapis de prière, Robe brodée..."
+                  class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-brand-600 focus:outline-none bg-white">
+              </div>
+              <div class="sm:col-span-4">
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">Prix en FCFA *</label>
+                <input type="number" id="input-new-article-price" required placeholder="Ex: 2500" min="100" step="100"
+                  class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-brand-600 focus:outline-none bg-white font-bold">
+              </div>
+              <div class="sm:col-span-3">
+                <button type="submit" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-brand-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <span>Ajouter l'article</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2110,7 +2266,7 @@
           <i data-lucide="plus" class="w-6 h-6"></i>
         </div>
         <h3 class="text-xl font-black text-slate-900">Enregistrer un Dépôt de Linge</h3>
-        <p class="text-xs text-slate-500">Ajout immédiat au planning et impression du ticket de caisse</p>
+        <p class="text-xs text-slate-500">Calcul automatique avec <strong>vos tarifs personnalisés</strong></p>
       </div>
 
       <form id="form-new-order-entry" class="space-y-4">
@@ -2127,57 +2283,17 @@
           </div>
         </div>
 
-        <!-- Sélection des Articles & Quantités -->
+        <!-- Sélection des Articles & Quantités Dynamiques -->
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Sélectionner les articles à laver / repasser</label>
-          <div class="space-y-2 border border-slate-200 rounded-2xl p-3 bg-slate-50 text-xs">
-            <div class="flex items-center justify-between">
-              <div>
-                <span class="font-bold text-slate-800">Grand Boubou Bazin</span>
-                <span class="text-slate-500 block text-[11px]">2 500 FCFA / pièce</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="boubou">−</button>
-                <span id="qty-boubou" class="font-black text-sm w-5 text-center">1</span>
-                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="boubou">+</button>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
-              <div>
-                <span class="font-bold text-slate-800">Costume 2 pièces</span>
-                <span class="text-slate-500 block text-[11px]">2 000 FCFA / pièce</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="costume">−</button>
-                <span id="qty-costume" class="font-black text-sm w-5 text-center">0</span>
-                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="costume">+</button>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
-              <div>
-                <span class="font-bold text-slate-800">Chemise / Pantalon simple</span>
-                <span class="text-slate-500 block text-[11px]">800 FCFA / pièce</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="chemise">−</button>
-                <span id="qty-chemise" class="font-black text-sm w-5 text-center">0</span>
-                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="chemise">+</button>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
-              <div>
-                <span class="font-bold text-slate-800">Couette grand lit / Drap</span>
-                <span class="text-slate-500 block text-[11px]">2 500 FCFA / pièce</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="couette">−</button>
-                <span id="qty-couette" class="font-black text-sm w-5 text-center">0</span>
-                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="couette">+</button>
-              </div>
-            </div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Sélectionner les articles déposés</label>
+            <button type="button" id="btn-quick-edit-tarifs-from-modal" class="text-[11px] text-brand-600 font-bold hover:underline flex items-center gap-1">
+              <i data-lucide="tag" class="w-3 h-3"></i>
+              <span>Modifier mes prix</span>
+            </button>
+          </div>
+          <div id="modal-order-items-dynamic-container" class="space-y-2 border border-slate-200 rounded-2xl p-3 bg-slate-50 text-xs max-h-56 overflow-y-auto">
+            <!-- Rempli automatiquement selon les tarifs du propriétaire par JS -->
           </div>
         </div>
 

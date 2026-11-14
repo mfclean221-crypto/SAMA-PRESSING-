@@ -1,6 +1,10 @@
 /**
  * SAMA PRESSING - Logiciel SaaS de Gestion de Pressing & Maintenance
- * Logique Frontend JavaScript Complète (Landing Page & Application Interactive)
+ * Logique Frontend JavaScript Complète :
+ * - Gestion Personnalisée des Tarifs par le Propriétaire
+ * - Assistant Vocal Conversationnel (Salutations + Synthèse Vocale Réelle + Factures)
+ * - Gestion des Commandes & Dépôts de Linge avec Tickets Thermiques
+ * - Stock Atelier, Boutique Nettoyage & Maintenance des Machines
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     yearSpan.textContent = new Date().getFullYear();
   }
 
-  // ================= 3. SYSTÈME DE TOAST NOTIFICATION FLOTTANT =================
+  // ================= 3. TOAST NOTIFICATIONS =================
   const toastEl = document.getElementById('app-toast-notification');
   const toastMsg = document.getElementById('toast-message');
   const toastIcon = document.getElementById('toast-icon');
@@ -43,7 +47,461 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3500);
   }
 
-  // ================= 4. BASULEMENT VUE SITE (LANDING) <-> APPLICATION (DASHBOARD) =================
+  // ================= 4. GESTION DES TARIFS PERSONNALISÉS DU PROPRIÉTAIRE =================
+  const defaultTarifs = [
+    { id: 'boubou', name: 'Grand Boubou Bazin riche', unit: 'Pièce', price: 2500, category: 'Traditionnel' },
+    { id: 'costume', name: 'Costume 2 pièces', unit: 'Pièce', price: 2000, category: 'Pressing' },
+    { id: 'chemise', name: 'Chemise / Pantalon simple', unit: 'Pièce', price: 800, category: 'Pressing' },
+    { id: 'couette', name: 'Couette grand lit / Drap', unit: 'Pièce', price: 2500, category: 'Literie' },
+    { id: 'kilo', name: 'Lavage au Kilo standard', unit: 'Kg', price: 1000, category: 'Au poids' },
+    { id: 'robe', name: 'Robe de soirée / Soie brodée', unit: 'Pièce', price: 3000, category: 'Délicat' },
+    { id: 'veste', name: 'Veste de costume seule', unit: 'Pièce', price: 1500, category: 'Pressing' },
+    { id: 'rideau', name: 'Rideaux & Voilages', unit: 'Mètre / Pièce', price: 2000, category: 'Maison' }
+  ];
+
+  let tarifs = [];
+  try {
+    const saved = localStorage.getItem('sama_pressing_tarifs');
+    tarifs = saved ? JSON.parse(saved) : defaultTarifs;
+  } catch (e) {
+    tarifs = defaultTarifs;
+  }
+
+  function getTarifPrice(id, fallback = 2000) {
+    const item = tarifs.find(t => t.id === id);
+    return item ? item.price : fallback;
+  }
+
+  function renderTarifsTable() {
+    const tbody = document.getElementById('app-tarifs-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    tarifs.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-bold text-slate-900">${item.name}</td>
+        <td class="py-3 px-4 text-slate-500 font-medium">${item.unit} (${item.category || 'Atelier'})</td>
+        <td class="py-3 px-4">
+          <div class="flex items-center gap-1.5">
+            <input type="number" min="100" step="100" value="${item.price}" data-index="${index}"
+              class="input-custom-price w-28 px-3 py-1.5 rounded-xl border border-slate-300 font-black text-brand-700 bg-white focus:outline-none focus:border-brand-600 text-xs">
+            <span class="font-bold text-slate-500 text-xs">FCFA</span>
+          </div>
+        </td>
+        <td class="py-3 px-4 text-right">
+          <button class="btn-delete-tarif p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" data-index="${index}" title="Supprimer cet article">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Écoute des modifications de prix en direct
+    tbody.querySelectorAll('.input-custom-price').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.getAttribute('data-index'), 10);
+        const val = parseInt(e.target.value, 10);
+        if (!isNaN(val) && val >= 0) {
+          tarifs[idx].price = val;
+          saveTarifs(false);
+        }
+      });
+    });
+
+    tbody.querySelectorAll('.btn-delete-tarif').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.getAttribute('data-index'), 10);
+        const removed = tarifs[idx]?.name || 'Article';
+        tarifs.splice(idx, 1);
+        saveTarifs(true, `Article « ${removed} » retiré du catalogue`);
+      });
+    });
+
+    refreshIcons();
+  }
+
+  function saveTarifs(notify = true, customMessage = null) {
+    try {
+      localStorage.setItem('sama_pressing_tarifs', JSON.stringify(tarifs));
+    } catch (e) {}
+    renderTarifsTable();
+    renderOrderModalDynamicItems();
+    if (notify) {
+      showToast(customMessage || "Vos tarifs personnalisés ont été enregistrés avec succès !");
+    }
+  }
+
+  const btnSaveTarifs = document.getElementById('btn-save-all-tarifs');
+  if (btnSaveTarifs) {
+    btnSaveTarifs.addEventListener('click', () => {
+      // Lire toutes les valeurs actuelles des inputs
+      document.querySelectorAll('.input-custom-price').forEach(input => {
+        const idx = parseInt(input.getAttribute('data-index'), 10);
+        const val = parseInt(input.value, 10);
+        if (!isNaN(val) && val >= 0) {
+          tarifs[idx].price = val;
+        }
+      });
+      saveTarifs(true, "Tous vos tarifs ont été sauvegardés avec succès !");
+    });
+  }
+
+  // Formulaire d'ajout d'un nouvel article personnalisé
+  const formAddCustomPrice = document.getElementById('form-add-custom-price');
+  if (formAddCustomPrice) {
+    formAddCustomPrice.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById('input-new-article-name');
+      const priceInput = document.getElementById('input-new-article-price');
+      const name = nameInput?.value.trim();
+      const price = parseInt(priceInput?.value, 10);
+
+      if (name && !isNaN(price) && price > 0) {
+        const id = 'custom_' + Date.now();
+        tarifs.push({
+          id,
+          name,
+          unit: 'Pièce',
+          price,
+          category: 'Personnalisé'
+        });
+        nameInput.value = '';
+        priceInput.value = '';
+        saveTarifs(true, `Nouvel article « ${name} » ajouté à ${price.toLocaleString('fr-FR')} FCFA !`);
+      }
+    });
+  }
+
+  // Raccourci header vers les tarifs
+  const btnTarifsShortcut = document.getElementById('btn-open-tarifs-shortcut');
+  if (btnTarifsShortcut) {
+    btnTarifsShortcut.addEventListener('click', () => {
+      openAppView('panel-tarifs');
+    });
+  }
+
+  // ================= 5. SYNTHÈSE VOCALE AUDIO RÉELLE (PARLE À VOIX HAUTE) =================
+  let currentSpokenUtterance = "Bonjour ! Bienvenue chez Sama Pressing. Quelles pièces de linge souhaitez-vous enregistrer aujourd'hui ?";
+
+  function speakAloud(text, lang = 'fr-FR') {
+    currentSpokenUtterance = text;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel(); // Arrêter toute parole précédente
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.lang = lang;
+
+      const soundWaves = [
+        document.getElementById('app-voice-soundwave'),
+        document.getElementById('voice-soundwave-bars')
+      ];
+
+      soundWaves.forEach(sw => sw?.classList.remove('opacity-0'));
+
+      utterance.onend = () => {
+        soundWaves.forEach(sw => sw?.classList.add('opacity-0'));
+      };
+      utterance.onerror = () => {
+        soundWaves.forEach(sw => sw?.classList.add('opacity-0'));
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  // Bouton pour réécouter la voix de l'assistant
+  const btnReplayVoice = document.getElementById('btn-replay-voice-audio');
+  if (btnReplayVoice) {
+    btnReplayVoice.addEventListener('click', () => {
+      speakAloud(currentSpokenUtterance);
+    });
+  }
+
+  // ================= 6. ASSISTANT VOCAL CONVERSATIONNEL (SALUTATIONS + COMMANDE) =================
+  const convUserBubble = document.getElementById('conv-user-bubble');
+  const convAssistantBubble = document.getElementById('conv-assistant-bubble');
+  const convAssistantText = document.getElementById('conv-assistant-text');
+  const voiceGenClient = document.getElementById('app-voice-client-name');
+  const voiceGenItems = document.getElementById('app-voice-items-container');
+  const voiceGenTotal = document.getElementById('app-voice-total-amount');
+
+  let currentVoiceOrderData = {
+    client: 'Modou Fall',
+    phone: '+221 78 456 78 90',
+    items: '2x Grand Boubou Bazin + 1x Couette Grand Lit',
+    total: 7500
+  };
+
+  // Scénario 1 : Saluer en Wolof
+  const btnSaluerWO = document.getElementById('app-btn-saluer-wo');
+  if (btnSaluerWO) {
+    btnSaluerWO.addEventListener('click', () => {
+      if (convUserBubble) {
+        convUserBubble.innerHTML = `<div class="bg-emerald-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">« Salamalekum Sama Pressing ! Nanga def ? »</div>`;
+      }
+      const response = "Wa alaykum salam ! Nanga def ? Jàmm nga am ? Wax ma sa commande ak li nga bëgg ma facturel la tey !";
+      if (convAssistantText) convAssistantText.textContent = `« ${response} »`;
+      speakAloud(response);
+      showToast("L'Assistant vous répond en Wolof...");
+    });
+  }
+
+  // Scénario 2 : Commande en Wolof
+  const btnCommanderWO = document.getElementById('app-btn-commander-wo');
+  if (btnCommanderWO) {
+    btnCommanderWO.addEventListener('click', () => {
+      const boubouPrice = getTarifPrice('boubou', 2500);
+      const couettePrice = getTarifPrice('couette', 2500);
+      const total = (2 * boubouPrice) + couettePrice;
+
+      if (convUserBubble) {
+        convUserBubble.innerHTML = `<div class="bg-emerald-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">« Facture Modou Fall : ñaari grands boubous ak benn couette grand lit »</div>`;
+      }
+
+      const response = `Wax ji jub na ! Facture Modou Fall paré na : 2 grands boubous ak 1 couette. Total bi ${total.toLocaleString('fr-FR')} FCFA la. Mën nga ko imprimer léegi !`;
+      if (convAssistantText) convAssistantText.textContent = `« ${response} »`;
+
+      currentVoiceOrderData = {
+        client: 'Modou Fall',
+        phone: '+221 78 456 78 90',
+        items: `2x Grand Boubou Bazin (${(2 * boubouPrice).toLocaleString('fr-FR')} F) + 1x Couette (${couettePrice.toLocaleString('fr-FR')} F)`,
+        total: total
+      };
+
+      if (voiceGenClient) voiceGenClient.textContent = "Modou Fall (+221 78 456 78 90)";
+      if (voiceGenItems) {
+        voiceGenItems.innerHTML = `
+          <div class="flex justify-between"><span>Grand Boubou Bazin (2 pcs × ${boubouPrice.toLocaleString('fr-FR')} F)</span><span class="font-bold">${(2 * boubouPrice).toLocaleString('fr-FR')} F</span></div>
+          <div class="flex justify-between"><span>Couette grand lit (1 pc × ${couettePrice.toLocaleString('fr-FR')} F)</span><span class="font-bold">${couettePrice.toLocaleString('fr-FR')} F</span></div>
+        `;
+      }
+      if (voiceGenTotal) voiceGenTotal.textContent = `${total.toLocaleString('fr-FR')} FCFA`;
+
+      speakAloud(response);
+      showToast("Facture générée avec succès avec vos tarifs !");
+    });
+  }
+
+  // Scénario 3 : Saluer en Français
+  const btnSaluerFR = document.getElementById('app-btn-saluer-fr');
+  if (btnSaluerFR) {
+    btnSaluerFR.addEventListener('click', () => {
+      if (convUserBubble) {
+        convUserBubble.innerHTML = `<div class="bg-blue-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">« Bonjour Sama Pressing ! »</div>`;
+      }
+      const response = "Bonjour ! Bienvenue chez Sama Pressing. Quelles pièces de linge souhaitez-vous enregistrer aujourd'hui ?";
+      if (convAssistantText) convAssistantText.textContent = `« ${response} »`;
+      speakAloud(response);
+      showToast("L'Assistant vous répond en Français...");
+    });
+  }
+
+  // Scénario 4 : Commande en Français
+  const btnCommanderFR = document.getElementById('app-btn-commander-fr');
+  if (btnCommanderFR) {
+    btnCommanderFR.addEventListener('click', () => {
+      const kiloPrice = getTarifPrice('kilo', 1000);
+      const costumePrice = getTarifPrice('costume', 2000);
+      const total = (3 * kiloPrice) + (2 * costumePrice);
+
+      if (convUserBubble) {
+        convUserBubble.innerHTML = `<div class="bg-blue-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-none text-xs max-w-[85%] font-medium">« Facture pour Awa Diop : 3 kilos de lavage et 2 costumes »</div>`;
+      }
+
+      const response = `C'est bien noté ! Facture créée pour Awa Diop : 3 kilos de lavage et 2 costumes. Le total s'élève à ${total.toLocaleString('fr-FR')} FCFA. Votre ticket est prêt !`;
+      if (convAssistantText) convAssistantText.textContent = `« ${response} »`;
+
+      currentVoiceOrderData = {
+        client: 'Awa Diop',
+        phone: '+221 77 123 45 67',
+        items: `Lavage au poids 3kg (${(3 * kiloPrice).toLocaleString('fr-FR')} F) + 2x Costumes (${(2 * costumePrice).toLocaleString('fr-FR')} F)`,
+        total: total
+      };
+
+      if (voiceGenClient) voiceGenClient.textContent = "Awa Diop (+221 77 123 45 67)";
+      if (voiceGenItems) {
+        voiceGenItems.innerHTML = `
+          <div class="flex justify-between"><span>Lavage au poids (3 kg × ${kiloPrice.toLocaleString('fr-FR')} F)</span><span class="font-bold">${(3 * kiloPrice).toLocaleString('fr-FR')} F</span></div>
+          <div class="flex justify-between"><span>Costume 2 pièces (2 pcs × ${costumePrice.toLocaleString('fr-FR')} F)</span><span class="font-bold">${(2 * costumePrice).toLocaleString('fr-FR')} F</span></div>
+        `;
+      }
+      if (voiceGenTotal) voiceGenTotal.textContent = `${total.toLocaleString('fr-FR')} FCFA`;
+
+      speakAloud(response);
+      showToast("Facture générée avec succès avec vos tarifs !");
+    });
+  }
+
+  // Bouton Micro Réel (Web Speech API Recognition)
+  const btnStartMic = document.getElementById('btn-start-mic-listening');
+  const micStatusLabel = document.getElementById('mic-status-label');
+
+  if (btnStartMic) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'fr-FR';
+
+      btnStartMic.addEventListener('click', () => {
+        try {
+          recognition.start();
+          if (micStatusLabel) micStatusLabel.textContent = "🎙️ Écoute active... Saluez l'assistant (« Bonjour » ou « Salamalekum ») ou dictez votre commande !";
+          btnStartMic.classList.add('animate-pulse');
+        } catch (err) {
+          btnSaluerWO?.click();
+        }
+      });
+
+      recognition.onresult = (event) => {
+        btnStartMic.classList.remove('animate-pulse');
+        const speechResult = event.results[0][0].transcript.toLowerCase();
+        if (micStatusLabel) micStatusLabel.textContent = `Reconnu : « ${speechResult} »`;
+
+        if (speechResult.includes('salam') || speechResult.includes('nanga')) {
+          btnSaluerWO?.click();
+        } else if (speechResult.includes('bonjour') || speechResult.includes('salut')) {
+          btnSaluerFR?.click();
+        } else if (speechResult.includes('boubou') || speechResult.includes('couette') || speechResult.includes('modou')) {
+          btnCommanderWO?.click();
+        } else {
+          btnCommanderFR?.click();
+        }
+      };
+
+      recognition.onerror = () => {
+        btnStartMic.classList.remove('animate-pulse');
+        if (micStatusLabel) micStatusLabel.textContent = "Micro en attente. Utilisez les boutons guidés ci-dessous :";
+      };
+      recognition.onend = () => {
+        btnStartMic.classList.remove('animate-pulse');
+      };
+    } else {
+      btnStartMic.addEventListener('click', () => {
+        btnSaluerWO?.click();
+      });
+    }
+  }
+
+  // Bouton pour insérer la commande vocale générée dans la liste réelle
+  const btnInsertVoice = document.getElementById('btn-insert-voice-order');
+  if (btnInsertVoice) {
+    btnInsertVoice.addEventListener('click', () => {
+      const nextNum = Math.floor(1060 + Math.random() * 800);
+      const newObj = {
+        id: `SP-${nextNum}`,
+        client: currentVoiceOrderData.client,
+        phone: currentVoiceOrderData.phone,
+        items: currentVoiceOrderData.items,
+        total: currentVoiceOrderData.total,
+        deposit: currentVoiceOrderData.total,
+        dueDate: 'Demain à 18h00',
+        status: 'En attente',
+        isLate: false
+      };
+      orders.unshift(newObj);
+      renderOrders();
+      showToast(`Commande ${newObj.id} (${newObj.client}) ajoutée aux commandes !`);
+      switchAppSubTab('panel-commandes');
+    });
+  }
+
+  // Bouton pour imprimer directement le ticket de la commande vocale
+  const btnPrintVoice = document.getElementById('btn-print-voice-order');
+  if (btnPrintVoice) {
+    btnPrintVoice.addEventListener('click', () => {
+      const nextNum = Math.floor(1060 + Math.random() * 800);
+      const newObj = {
+        id: `SP-${nextNum}`,
+        client: currentVoiceOrderData.client,
+        phone: currentVoiceOrderData.phone,
+        items: currentVoiceOrderData.items,
+        total: currentVoiceOrderData.total,
+        deposit: currentVoiceOrderData.total,
+        dueDate: 'Demain à 18h00',
+        status: 'En attente',
+        isLate: false
+      };
+      orders.unshift(newObj);
+      renderOrders();
+      openReceiptForOrder(newObj.id);
+    });
+  }
+
+  // Bouton Facture Vocale de la bannière d'accueil
+  const quickVoiceTrigger = document.getElementById('btn-quick-voice-trigger');
+  if (quickVoiceTrigger) {
+    quickVoiceTrigger.addEventListener('click', () => {
+      switchAppSubTab('panel-vocal');
+    });
+  }
+
+  // ================= 7. ASSISTANT VOCAL DE LA LANDING PAGE AVEC PAROLE AUDIO =================
+  const btnVoiceLandingFR = document.getElementById('trigger-voice-fr');
+  const btnVoiceLandingWO = document.getElementById('trigger-voice-wo');
+  const invoiceClient = document.getElementById('invoice-client-name');
+  const invoiceRows = document.getElementById('invoice-items-container');
+  const invoiceTotalAmount = document.getElementById('invoice-total-amount');
+  const invoiceDueDate = document.getElementById('invoice-due-date');
+  const voiceStatusMsg = document.getElementById('voice-status-indicator');
+  const voiceRecognizedQuote = document.getElementById('voice-quote-display');
+
+  if (btnVoiceLandingFR) {
+    btnVoiceLandingFR.addEventListener('click', () => {
+      const boubouPrice = getTarifPrice('boubou', 2500);
+      const costumePrice = getTarifPrice('costume', 2000);
+      const kiloPrice = getTarifPrice('kilo', 1000);
+      const total = (3 * kiloPrice) + (2 * costumePrice);
+
+      const phrase = "« Facture pour Awa Diop : 3 kilos de lavage et 2 costumes »";
+      const reply = `Bonjour Awa Diop ! Vos 3 kilos de lavage et 2 costumes sont bien pris en compte pour ${total.toLocaleString('fr-FR')} FCFA.`;
+
+      if (voiceStatusMsg) voiceStatusMsg.textContent = 'Commande reconnue en Français ✓';
+      if (voiceRecognizedQuote) voiceRecognizedQuote.textContent = phrase;
+      if (invoiceClient) invoiceClient.textContent = 'Awa Diop';
+      if (invoiceTotalAmount) invoiceTotalAmount.textContent = `${total.toLocaleString('fr-FR')} FCFA`;
+      if (invoiceDueDate) invoiceDueDate.textContent = 'À rendre : dans 2 jours (Standard)';
+      if (invoiceRows) {
+        invoiceRows.innerHTML = `
+          <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Lavage & repassage (3 kg × ${kiloPrice.toLocaleString('fr-FR')} F)</span><span class="font-bold text-slate-900">${(3 * kiloPrice).toLocaleString('fr-FR')} F</span></div>
+          <div class="flex justify-between items-center text-xs py-1.5"><span class="text-slate-600">Costume 2 pièces (2 × ${costumePrice.toLocaleString('fr-FR')} F)</span><span class="font-bold text-slate-900">${(2 * costumePrice).toLocaleString('fr-FR')} F</span></div>
+        `;
+      }
+      speakAloud(reply);
+    });
+  }
+
+  if (btnVoiceLandingWO) {
+    btnVoiceLandingWO.addEventListener('click', () => {
+      const boubouPrice = getTarifPrice('boubou', 2500);
+      const couettePrice = getTarifPrice('couette', 2500);
+      const total = (2 * boubouPrice) + couettePrice + 1500; // supplément express
+
+      const phrase = "« Facture Modou Fall : ñaari grands boubous ak benn couette express »";
+      const reply = `Wa alaykum salam Modou Fall ! 2 grands boubous ak 1 couette express paré na, total bi ${total.toLocaleString('fr-FR')} FCFA la.`;
+
+      if (voiceStatusMsg) voiceStatusMsg.textContent = 'Commande reconnue en Wolof (Degglu) ✓';
+      if (voiceRecognizedQuote) voiceRecognizedQuote.textContent = phrase;
+      if (invoiceClient) invoiceClient.textContent = 'Modou Fall';
+      if (invoiceTotalAmount) invoiceTotalAmount.textContent = `${total.toLocaleString('fr-FR')} FCFA`;
+      if (invoiceDueDate) invoiceDueDate.textContent = "À rendre : Aujourd'hui (Express)";
+      if (invoiceRows) {
+        invoiceRows.innerHTML = `
+          <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Grand boubou (2 × ${boubouPrice.toLocaleString('fr-FR')} F)</span><span class="font-bold text-slate-900">${(2 * boubouPrice).toLocaleString('fr-FR')} F</span></div>
+          <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Couette grand lit (1 × ${couettePrice.toLocaleString('fr-FR')} F)</span><span class="font-bold text-slate-900">${couettePrice.toLocaleString('fr-FR')} F</span></div>
+          <div class="flex justify-between items-center text-xs py-1.5"><span class="text-slate-600">Supplément Express +20%</span><span class="font-bold text-slate-900">1 500 F</span></div>
+        `;
+      }
+      speakAloud(reply);
+    });
+  }
+
+  // ================= 8. NAVIGATION ENTRE VUE SITE (LANDING) ET APPLICATION =================
   const landingPageView = document.getElementById('landing-page-view');
   const appDashboardView = document.getElementById('app-dashboard-view');
 
@@ -66,7 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Boutons de déclenchement vers l'Application
   const directAppBtn = document.getElementById('btn-open-app-direct');
   const directAppMobileBtn = document.querySelector('.btn-open-app-direct-mobile');
   const directAppPhoneBtn = document.querySelector('.btn-open-app-direct-phone');
@@ -79,7 +536,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (heroTestAppBtn) heroTestAppBtn.addEventListener('click', () => openAppView('panel-commandes'));
   if (returnLandingBtn) returnLandingBtn.addEventListener('click', openLandingView);
 
-  // Déclencheurs depuis les cartes Fonctionnalités
   document.querySelectorAll('.app-tab-launcher').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-tab') || 'panel-commandes';
@@ -87,7 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 5. MENU MOBILE =================
+  // Menu Mobile
   const mobileToggleBtn = document.getElementById('mobile-menu-toggle');
   const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
   const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -106,16 +562,12 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         mobileMenuDrawer.classList.add('hidden');
-        const icon = mobileToggleBtn.querySelector('i');
-        if (icon) {
-          icon.setAttribute('data-lucide', 'menu');
-          refreshIcons();
-        }
+        refreshIcons();
       });
     });
   }
 
-  // ================= 6. GESTION DES ONGLETS DE L'APPLICATION =================
+  // ================= 9. GESTION DES ONGLETS DU DASHBOARD =================
   const subTabButtons = document.querySelectorAll('.app-subtab-btn');
   const subTabPanels = document.querySelectorAll('.app-tab-panel');
 
@@ -137,6 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    if (panelId === 'panel-tarifs') renderTarifsTable();
     refreshIcons();
   }
 
@@ -147,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 7. DONNÉES & GESTION DES COMMANDES (PANNEAU 1) =================
+  // ================= 10. GESTION DES COMMANDES (PANNEAU 1) =================
   let currentPressingName = localStorage.getItem('sama_pressing_name') || 'MF Clean Dakar';
   const pressingTitleEl = document.getElementById('app-current-pressing-title');
   const welcomePressingEl = document.getElementById('welcome-pressing-name');
@@ -258,7 +711,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const row = document.createElement('tr');
       row.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
 
-      // Status badge style
       let statusBadge = '';
       if (o.status === 'En attente') {
         statusBadge = '<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px]">⏳ En attente</span>';
@@ -309,25 +761,21 @@ document.addEventListener('DOMContentLoaded', () => {
       ordersTableBody.appendChild(row);
     });
 
-    // Listeners sur les boutons de chaque ligne
     ordersTableBody.querySelectorAll('.btn-toggle-status').forEach(btn => {
       btn.addEventListener('click', () => {
-        const orderId = btn.getAttribute('data-id');
-        advanceOrderStatus(orderId);
+        advanceOrderStatus(btn.getAttribute('data-id'));
       });
     });
 
     ordersTableBody.querySelectorAll('.btn-print-order-receipt').forEach(btn => {
       btn.addEventListener('click', () => {
-        const orderId = btn.getAttribute('data-id');
-        openReceiptForOrder(orderId);
+        openReceiptForOrder(btn.getAttribute('data-id'));
       });
     });
 
     ordersTableBody.querySelectorAll('.btn-send-order-wa').forEach(btn => {
       btn.addEventListener('click', () => {
-        const orderId = btn.getAttribute('data-id');
-        sendWhatsAppNotificationForOrder(orderId);
+        sendWhatsAppNotificationForOrder(btn.getAttribute('data-id'));
       });
     });
 
@@ -342,7 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextIdx = (states.indexOf(order.status) + 1) % states.length;
     order.status = states[nextIdx];
     if (order.status === 'Livré') {
-      order.deposit = order.total; // Encaissé totalité
+      order.deposit = order.total;
       order.isLate = false;
     }
     showToast(`Commande ${order.id} passée en : « ${order.status} » !`);
@@ -390,14 +838,83 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 8. NOUVELLE COMMANDE MODALE =================
+  // ================= 11. MODAL NOUVEAU DÉPÔT AVEC ARTICLES DYNAMIQUES SELON TARIFS =================
   const newOrderModal = document.getElementById('modal-new-order');
   const openNewOrderBtn = document.getElementById('btn-new-order-modal-open');
   const closeNewOrderBtn = document.getElementById('close-new-order-modal-btn');
   const newOrderForm = document.getElementById('form-new-order-entry');
+  const modalItemsContainer = document.getElementById('modal-order-items-dynamic-container');
+  const btnQuickEditTarifs = document.getElementById('btn-quick-edit-tarifs-from-modal');
+
+  let orderQuantities = {};
+
+  function renderOrderModalDynamicItems() {
+    if (!modalItemsContainer) return;
+    modalItemsContainer.innerHTML = '';
+
+    tarifs.forEach((item, index) => {
+      if (orderQuantities[item.id] === undefined) {
+        orderQuantities[item.id] = (index === 0 ? 1 : 0);
+      }
+
+      const row = document.createElement('div');
+      row.className = "flex items-center justify-between py-1.5 border-b border-slate-200 last:border-0";
+      row.innerHTML = `
+        <div>
+          <span class="font-bold text-slate-800">${item.name}</span>
+          <span class="text-slate-500 block text-[11px]">${item.price.toLocaleString('fr-FR')} FCFA / ${item.unit}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" class="btn-dyn-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-id="${item.id}">−</button>
+          <span id="dyn-qty-${item.id}" class="font-black text-sm w-5 text-center">${orderQuantities[item.id]}</span>
+          <button type="button" class="btn-dyn-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-id="${item.id}">+</button>
+        </div>
+      `;
+      modalItemsContainer.appendChild(row);
+    });
+
+    modalItemsContainer.querySelectorAll('.btn-dyn-plus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        orderQuantities[id] = (orderQuantities[id] || 0) + 1;
+        const span = document.getElementById(`dyn-qty-${id}`);
+        if (span) span.textContent = orderQuantities[id];
+        calculateNewOrderTotal();
+      });
+    });
+
+    modalItemsContainer.querySelectorAll('.btn-dyn-minus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        if (orderQuantities[id] && orderQuantities[id] > 0) {
+          orderQuantities[id]--;
+          const span = document.getElementById(`dyn-qty-${id}`);
+          if (span) span.textContent = orderQuantities[id];
+          calculateNewOrderTotal();
+        }
+      });
+    });
+
+    calculateNewOrderTotal();
+  }
+
+  function calculateNewOrderTotal() {
+    let tot = 0;
+    tarifs.forEach(item => {
+      const q = orderQuantities[item.id] || 0;
+      tot += q * item.price;
+    });
+
+    const totalDisplay = document.getElementById('order-calculated-total');
+    const depositInput = document.getElementById('order-input-deposit');
+    if (totalDisplay) totalDisplay.textContent = tot.toLocaleString('fr-FR') + ' FCFA';
+    if (depositInput) depositInput.value = tot;
+    return tot;
+  }
 
   if (openNewOrderBtn && newOrderModal) {
     openNewOrderBtn.addEventListener('click', () => {
+      renderOrderModalDynamicItems();
       newOrderModal.classList.remove('hidden');
       newOrderModal.classList.add('flex');
       refreshIcons();
@@ -418,45 +935,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Calcul dynamique des articles dans le formulaire de dépôt
-  const prices = { boubou: 2500, costume: 2000, chemise: 800, couette: 2500 };
-  const quantities = { boubou: 1, costume: 0, chemise: 0, couette: 0 };
-  const totalDisplay = document.getElementById('order-calculated-total');
-  const depositInput = document.getElementById('order-input-deposit');
-
-  function calculateNewOrderTotal() {
-    let tot = 0;
-    for (const [key, qty] of Object.entries(quantities)) {
-      tot += qty * (prices[key] || 0);
-    }
-    if (totalDisplay) totalDisplay.textContent = tot.toLocaleString('fr-FR') + ' FCFA';
-    if (depositInput) depositInput.value = tot;
-    return tot;
+  if (btnQuickEditTarifs) {
+    btnQuickEditTarifs.addEventListener('click', () => {
+      hideNewOrderModal();
+      openAppView('panel-tarifs');
+    });
   }
-
-  document.querySelectorAll('.btn-qty-plus').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.getAttribute('data-item');
-      if (quantities[item] !== undefined) {
-        quantities[item]++;
-        const span = document.getElementById(`qty-${item}`);
-        if (span) span.textContent = quantities[item];
-        calculateNewOrderTotal();
-      }
-    });
-  });
-
-  document.querySelectorAll('.btn-qty-minus').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.getAttribute('data-item');
-      if (quantities[item] && quantities[item] > 0) {
-        quantities[item]--;
-        const span = document.getElementById(`qty-${item}`);
-        if (span) span.textContent = quantities[item];
-        calculateNewOrderTotal();
-      }
-    });
-  });
 
   if (newOrderForm) {
     newOrderForm.addEventListener('submit', (e) => {
@@ -465,14 +949,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = document.getElementById('order-input-phone')?.value.trim() || '+221 77 000 00 00';
       const dueDate = document.getElementById('order-input-due-date')?.value.trim() || 'Demain à 18h';
       const total = calculateNewOrderTotal();
+      const depositInput = document.getElementById('order-input-deposit');
       const deposit = parseInt(depositInput?.value, 10) || total;
 
       const itemsDesc = [];
-      if (quantities.boubou > 0) itemsDesc.push(`${quantities.boubou}x Grand Boubou`);
-      if (quantities.costume > 0) itemsDesc.push(`${quantities.costume}x Costume`);
-      if (quantities.chemise > 0) itemsDesc.push(`${quantities.chemise}x Chemise/Pantalon`);
-      if (quantities.couette > 0) itemsDesc.push(`${quantities.couette}x Couette`);
-      if (itemsDesc.length === 0) itemsDesc.push('1x Lavage standard');
+      tarifs.forEach(item => {
+        const q = orderQuantities[item.id] || 0;
+        if (q > 0) itemsDesc.push(`${q}x ${item.name}`);
+      });
+      if (itemsDesc.length === 0) itemsDesc.push('1x Dépôt de linge');
 
       const nextNum = Math.floor(1050 + Math.random() * 900);
       const newOrderObj = {
@@ -491,13 +976,11 @@ document.addEventListener('DOMContentLoaded', () => {
       renderOrders();
       hideNewOrderModal();
       showToast(`Commande ${newOrderObj.id} enregistrée pour ${client} !`);
-
-      // Ouvrir immédiatement le reçu thermique pour cette nouvelle commande
       openReceiptForOrder(newOrderObj.id);
     });
   }
 
-  // ================= 9. GESTION DU REÇU & TICKET THERMIQUE (#modal-receipt) =================
+  // ================= 12. GESTION DU REÇU & TICKET THERMIQUE =================
   const receiptModal = document.getElementById('modal-receipt');
   const closeReceiptBtn = document.getElementById('close-receipt-btn');
   const printActionBtn = document.getElementById('btn-print-receipt-action');
@@ -558,12 +1041,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (printActionBtn) {
-    printActionBtn.addEventListener('click', () => window.print());
-  }
+  if (printActionBtn) printActionBtn.addEventListener('click', () => window.print());
   if (downloadPdfBtn) {
     downloadPdfBtn.addEventListener('click', () => {
-      alert("💡 Astuce : Dans la fenêtre d'impression, sélectionnez 'Enregistrer au format PDF' dans Destination.");
+      alert("💡 Astuce : Dans la fenêtre d'impression, choisissez 'Enregistrer au format PDF'.");
       window.print();
     });
   }
@@ -577,99 +1058,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================= 10. COMMANDE VOCALE DANS LE DASHBOARD (PANNEAU 2) =================
-  const appVoiceBtnFR = document.getElementById('app-btn-voice-fr');
-  const appVoiceBtnWO = document.getElementById('app-btn-voice-wo');
-  const appVoiceWave = document.getElementById('app-voice-soundwave');
-  const appVoiceStatus = document.getElementById('app-voice-status-indicator');
-  const appVoiceClient = document.getElementById('app-voice-client-name');
-  const appVoiceItems = document.getElementById('app-voice-items-container');
-  const appVoiceTotal = document.getElementById('app-voice-total-amount');
-  const btnInsertVoiceOrder = document.getElementById('btn-insert-voice-order');
-
-  let currentVoiceOrder = {
-    client: 'Awa Diop',
-    phone: '+221 77 123 45 67',
-    items: 'Lavage & repassage 3kg + 2 Costumes',
-    total: 6400
-  };
-
-  function simulateVoiceApp(lang) {
-    if (appVoiceWave) appVoiceWave.classList.remove('opacity-0');
-    if (appVoiceStatus) {
-      appVoiceStatus.textContent = lang === 'fr'
-        ? '🎙️ Écoute vocale en cours : « 3 kilos de lavage et 2 costumes pour Awa Diop »...'
-        : '🎙️ Degglu wolof ci micro bi : « ñaari grands boubous ak benn couette pour Modou Fall »...';
-    }
-
-    setTimeout(() => {
-      if (appVoiceWave) appVoiceWave.classList.add('opacity-0');
-      if (lang === 'fr') {
-        currentVoiceOrder = {
-          client: 'Awa Diop',
-          phone: '+221 77 123 45 67',
-          items: 'Lavage & repassage (3kg) + Costume (2 pcs)',
-          total: 6400
-        };
-        if (appVoiceClient) appVoiceClient.textContent = 'Awa Diop';
-        if (appVoiceItems) {
-          appVoiceItems.innerHTML = `
-            <div class="flex justify-between"><span>Lavage & repassage (3 kg)</span><span class="font-bold">2 400 F</span></div>
-            <div class="flex justify-between"><span>Costume 2 pièces (2 pcs)</span><span class="font-bold">4 000 F</span></div>
-          `;
-        }
-        if (appVoiceTotal) appVoiceTotal.textContent = '6 400 FCFA';
-        if (appVoiceStatus) appVoiceStatus.textContent = '✓ Commande transcrite en Français avec succès !';
-      } else {
-        currentVoiceOrder = {
-          client: 'Modou Fall',
-          phone: '+221 78 456 78 90',
-          items: '2x Grand Boubou Bazin + 1x Couette Grand Lit',
-          total: 7000
-        };
-        if (appVoiceClient) appVoiceClient.textContent = 'Modou Fall';
-        if (appVoiceItems) {
-          appVoiceItems.innerHTML = `
-            <div class="flex justify-between"><span>Grand Boubou Bazin (2 pcs)</span><span class="font-bold">5 000 F</span></div>
-            <div class="flex justify-between"><span>Couette grand lit (1 pc)</span><span class="font-bold">2 000 F</span></div>
-          `;
-        }
-        if (appVoiceTotal) appVoiceTotal.textContent = '7 000 FCFA';
-        if (appVoiceStatus) appVoiceStatus.textContent = '✓ Wax ji jub na ci Wolof ! (Commande transcrite avec succès)';
-      }
-    }, 900);
-  }
-
-  if (appVoiceBtnFR) appVoiceBtnFR.addEventListener('click', () => simulateVoiceApp('fr'));
-  if (appVoiceBtnWO) appVoiceBtnWO.addEventListener('click', () => simulateVoiceApp('wo'));
-
-  if (btnInsertVoiceOrder) {
-    btnInsertVoiceOrder.addEventListener('click', () => {
-      const nextNum = Math.floor(1060 + Math.random() * 800);
-      const newObj = {
-        id: `SP-${nextNum}`,
-        client: currentVoiceOrder.client,
-        phone: currentVoiceOrder.phone,
-        items: currentVoiceOrder.items,
-        total: currentVoiceOrder.total,
-        deposit: currentVoiceOrder.total,
-        dueDate: 'Demain à 18h00',
-        status: 'En attente',
-        isLate: false
-      };
-      orders.unshift(newObj);
-      renderOrders();
-      showToast(`Commande vocale ${newObj.id} (${newObj.client}) ajoutée aux commandes !`);
-      switchAppSubTab('panel-commandes');
-    });
-  }
-
-  // ================= 11. STOCK ATELIER INTERACTIF (PANNEAU 3) =================
+  // ================= 13. STOCK ATELIER INTERACTIF =================
   const stockItems = [
-    { id: 'lessive', name: 'Lessive liquide ultra-blanchissante', unit: 'Litres', qty: 35, max: 50, alertThreshold: 15, icon: 'package' },
-    { id: 'detachant', name: 'Détachant Bazin & Soie délicate', unit: 'Flacons', qty: 8, max: 15, alertThreshold: 5, icon: 'sparkles' },
-    { id: 'cintres', name: 'Cintres métalliques de pressing', unit: 'Pièces', qty: 140, max: 200, alertThreshold: 50, icon: 'tag' },
-    { id: 'housses', name: 'Housses plastique protection', unit: 'Rouleaux', qty: 45, max: 60, alertThreshold: 20, icon: 'layers' }
+    { id: 'lessive', name: 'Lessive liquide ultra-blanchissante', unit: 'Litres', qty: 35, max: 50, alertThreshold: 15 },
+    { id: 'detachant', name: 'Détachant Bazin & Soie délicate', unit: 'Flacons', qty: 8, max: 15, alertThreshold: 5 },
+    { id: 'cintres', name: 'Cintres métalliques de pressing', unit: 'Pièces', qty: 140, max: 200, alertThreshold: 50 },
+    { id: 'housses', name: 'Housses plastique protection', unit: 'Rouleaux', qty: 45, max: 60, alertThreshold: 20 }
   ];
 
   function renderStockCards() {
@@ -694,13 +1088,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="text-2xl font-black text-slate-900">${item.qty}</span>
             <span class="text-xs text-slate-500">${item.unit} / ${item.max}</span>
           </div>
-          <!-- Jauge -->
           <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
             <div class="${barColor} h-full transition-all duration-300" style="width: ${pct}%"></div>
           </div>
         </div>
 
-        <!-- Boutons + et - -->
         <div class="flex items-center justify-between pt-2 border-t border-slate-200">
           <span class="text-[11px] text-slate-400 font-semibold">Mettre à jour :</span>
           <div class="flex items-center gap-1.5">
@@ -714,8 +1106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.querySelectorAll('.btn-stock-inc').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const it = stockItems.find(s => s.id === id);
+        const it = stockItems.find(s => s.id === btn.getAttribute('data-id'));
         if (it && it.qty < it.max) {
           it.qty++;
           renderStockCards();
@@ -726,8 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.querySelectorAll('.btn-stock-dec').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const it = stockItems.find(s => s.id === id);
+        const it = stockItems.find(s => s.id === btn.getAttribute('data-id'));
         if (it && it.qty > 0) {
           it.qty--;
           renderStockCards();
@@ -738,7 +1128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshIcons();
   }
 
-  // ================= 12. BOUTIQUE DE PRODUITS DE NETTOYAGE (PANNEAU 4) =================
+  // ================= 14. BOUTIQUE DE PRODUITS DE NETTOYAGE =================
   let currentBoutiqueSales = 14500;
   let currentBoutiqueProfit = 10800;
 
@@ -779,8 +1169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.querySelectorAll('.btn-sell-product').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const prod = boutiqueProducts.find(p => p.id === id);
+        const prod = boutiqueProducts.find(p => p.id === btn.getAttribute('data-id'));
         if (prod && prod.stock > 0) {
           prod.stock--;
           currentBoutiqueSales += prod.price;
@@ -791,7 +1180,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (profitEl) profitEl.textContent = `+${currentBoutiqueProfit.toLocaleString('fr-FR')} FCFA`;
           if (caisseBoutiqueRev) caisseBoutiqueRev.textContent = `${currentBoutiqueSales.toLocaleString('fr-FR')} FCFA`;
 
-          // Ajout à l'historique des ventes
           const history = document.getElementById('app-boutique-sales-history');
           if (history) {
             const item = document.createElement('div');
@@ -800,7 +1188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             history.insertBefore(item, history.firstChild);
           }
 
-          showToast(`Vente enregistrée : 1x ${prod.name} (+${prod.profit.toLocaleString('fr-FR')} F bénéfice net) !`);
+          showToast(`Vente enregistrée : 1x ${prod.name} (+${prod.profit.toLocaleString('fr-FR')} F bénéfice) !`);
           renderBoutiqueProducts();
           updateSummaryKPIs();
         }
@@ -809,7 +1197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshIcons();
   }
 
-  // ================= 13. ENTRETIEN & MAINTENANCE MACHINES (PANNEAU 5) =================
+  // ================= 15. ENTRETIEN DES MACHINES =================
   const machines = [
     { id: 'm1', name: 'Machine à laver Primus 15kg', cycles: 48, maxCycles: 50, status: 'Détartrage recommandé', isAlert: true },
     { id: 'm2', name: 'Séchoir rotatif Huebsch 18kg', cycles: 12, maxCycles: 100, status: 'Opérationnel - Parfait état', isAlert: false },
@@ -860,8 +1248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.querySelectorAll('.btn-machine-cycle').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const m = machines.find(x => x.id === id);
+        const m = machines.find(x => x.id === btn.getAttribute('data-id'));
         if (m) {
           m.cycles++;
           if (m.cycles >= m.maxCycles) {
@@ -869,28 +1256,27 @@ document.addEventListener('DOMContentLoaded', () => {
             m.status = 'Détartrage obligatoire !';
           }
           renderMachinesCards();
-          showToast(`+1 Cycle enregistré sur ${m.name}`);
+          showToast(`+1 Cycle sur ${m.name}`);
         }
       });
     });
 
     container.querySelectorAll('.btn-machine-reset').forEach(btn => {
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        const m = machines.find(x => x.id === id);
+        const m = machines.find(x => x.id === btn.getAttribute('data-id'));
         if (m) {
           m.cycles = 0;
           m.isAlert = false;
           m.status = 'Opérationnel - Récemment entretenu ✓';
           renderMachinesCards();
-          showToast(`Entretien validé sur ${m.name} ! Compteur remis à 0.`);
+          showToast(`Entretien validé sur ${m.name} !`);
         }
       });
     });
     refreshIcons();
   }
 
-  // ================= 14. FORMULAIRES D'INSCRIPTION & ESSAI 14 JOURS =================
+  // ================= 16. FORMULAIRES D'INSCRIPTION & ESSAI 14 JOURS =================
   const trialModal = document.getElementById('modal-trial');
   const trialOpenButtons = document.querySelectorAll('.trigger-trial-modal');
   const trialCloseButton = document.getElementById('close-trial-btn');
@@ -956,7 +1342,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const generatedId = 'SP-' + randomNum;
         const generatedPass = 'sama' + randomNum;
 
-        // Mise à jour de l'état
         currentPressingName = pressingName;
         localStorage.setItem('sama_pressing_name', pressingName);
         if (pressingTitleEl) pressingTitleEl.textContent = pressingName;
@@ -983,7 +1368,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (trialSuccess) trialSuccess.classList.remove('hidden');
           refreshIcons();
 
-          // Lancement automatique du dashboard après 1.8s
           setTimeout(() => {
             hideTrialModal();
             openAppView('panel-commandes');
@@ -1047,7 +1431,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (contactSuccess) contactSuccess.classList.remove('hidden');
         refreshIcons();
 
-        // Lancement automatique du dashboard après 1.8s
         setTimeout(() => {
           openAppView('panel-commandes');
           showToast(`Bienvenue sur ${pressingName} ! Votre espace pressing est prêt.`);
@@ -1056,76 +1439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================= 15. ASSISTANT VOCAL DE LA LANDING PAGE =================
-  const btnVoiceFR = document.getElementById('trigger-voice-fr');
-  const btnVoiceWO = document.getElementById('trigger-voice-wo');
-  const soundWaveLanding = document.getElementById('voice-soundwave-bars');
-  const voiceStatusMsg = document.getElementById('voice-status-indicator');
-  const voiceRecognizedQuote = document.getElementById('voice-quote-display');
-  const invoiceClient = document.getElementById('invoice-client-name');
-  const invoiceRows = document.getElementById('invoice-items-container');
-  const invoiceTotalAmount = document.getElementById('invoice-total-amount');
-  const invoiceDueDate = document.getElementById('invoice-due-date');
-
-  function runLandingVoice(lang) {
-    if (btnVoiceFR && btnVoiceWO) {
-      if (lang === 'fr') {
-        btnVoiceFR.className = "py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-md transition-all flex items-center justify-center gap-2";
-        btnVoiceWO.className = "py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all flex items-center justify-center gap-2";
-      } else {
-        btnVoiceWO.className = "py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-md transition-all flex items-center justify-center gap-2";
-        btnVoiceFR.className = "py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all flex items-center justify-center gap-2";
-      }
-    }
-
-    if (soundWaveLanding) soundWaveLanding.classList.remove('opacity-0');
-    if (voiceStatusMsg) voiceStatusMsg.textContent = lang === 'fr' ? 'Écoute vocale en cours...' : 'Degglu wolof ci micro bi...';
-
-    setTimeout(() => {
-      if (soundWaveLanding) soundWaveLanding.classList.add('opacity-0');
-      if (lang === 'fr') {
-        if (voiceStatusMsg) voiceStatusMsg.textContent = 'Commande reconnue en Français ✓';
-        if (voiceRecognizedQuote) voiceRecognizedQuote.textContent = "« Facture pour Awa Diop : 3 kilos de lavage et repassage et 2 costumes »";
-        if (invoiceClient) invoiceClient.textContent = 'Awa Diop';
-        if (invoiceTotalAmount) invoiceTotalAmount.textContent = '6 400 FCFA';
-        if (invoiceDueDate) invoiceDueDate.textContent = 'À rendre : dans 2 jours (Standard)';
-        if (invoiceRows) {
-          invoiceRows.innerHTML = `
-            <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Lavage & repassage (3 kg × 800 F)</span><span class="font-bold text-slate-900">2 400 F</span></div>
-            <div class="flex justify-between items-center text-xs py-1.5"><span class="text-slate-600">Costume 2 pièces (2 × 2 000 F)</span><span class="font-bold text-slate-900">4 000 F</span></div>
-          `;
-        }
-      } else {
-        if (voiceStatusMsg) voiceStatusMsg.textContent = 'Commande reconnue en Wolof (Degglu) ✓';
-        if (voiceRecognizedQuote) voiceRecognizedQuote.textContent = "« Facture Modou Fall : ñaari grands boubous ak benn couette express »";
-        if (invoiceClient) invoiceClient.textContent = 'Modou Fall';
-        if (invoiceTotalAmount) invoiceTotalAmount.textContent = '8 400 FCFA';
-        if (invoiceDueDate) invoiceDueDate.textContent = 'À rendre : Aujourd\'hui (Express)';
-        if (invoiceRows) {
-          invoiceRows.innerHTML = `
-            <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Grand boubou (2 × 2 500 F)</span><span class="font-bold text-slate-900">5 000 F</span></div>
-            <div class="flex justify-between items-center text-xs py-1.5 border-b border-slate-100"><span class="text-slate-600">Couette grand lit (1 × 2 000 F)</span><span class="font-bold text-slate-900">2 000 F</span></div>
-            <div class="flex justify-between items-center text-xs py-1.5"><span class="text-slate-600">Supplément Express +20%</span><span class="font-bold text-slate-900">1 400 F</span></div>
-          `;
-        }
-      }
-    }, 700);
-  }
-
-  if (btnVoiceFR) btnVoiceFR.addEventListener('click', () => runLandingVoice('fr'));
-  if (btnVoiceWO) btnVoiceWO.addEventListener('click', () => runLandingVoice('wo'));
-
-  const shareLandingWaBtn = document.getElementById('share-invoice-whatsapp-btn');
-  if (shareLandingWaBtn) {
-    shareLandingWaBtn.addEventListener('click', () => {
-      const client = invoiceClient ? invoiceClient.textContent : 'Client';
-      const total = invoiceTotalAmount ? invoiceTotalAmount.textContent : '0 FCFA';
-      const text = encodeURIComponent(`Bonjour ${client},\nVotre facture Sama Pressing (${total}) est bien enregistrée.\nNous prenons soin de votre linge avec excellence.`);
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-    });
-  }
-
-  // ================= 16. ACCORDÉON FAQ =================
+  // ================= 17. ACCORDÉON FAQ =================
   const faqButtons = document.querySelectorAll('.faq-toggle-btn');
   faqButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1143,22 +1457,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Déclencheur Reçu de Caisse depuis la section Fonctionnalités
   const cardReceiptTriggerBtn = document.getElementById('card-receipt-trigger-btn');
   if (cardReceiptTriggerBtn) {
     cardReceiptTriggerBtn.addEventListener('click', () => openReceiptForOrder('SP-1041'));
   }
 
-  // Bouton d'accès rapide vocal dans la bannière de bienvenue de l'application
-  const quickVoiceTrigger = document.getElementById('btn-quick-voice-trigger');
-  if (quickVoiceTrigger) {
-    quickVoiceTrigger.addEventListener('click', () => {
-      switchAppSubTab('panel-vocal');
-    });
-  }
-
-  // ================= 17. INITIALISATION DU RENDU DE L'APPLICATION =================
+  // ================= 18. INITIALISATION DU SYSTÈME =================
   renderOrders();
+  renderTarifsTable();
+  renderOrderModalDynamicItems();
   renderStockCards();
   renderBoutiqueProducts();
   renderMachinesCards();
