@@ -129,10 +129,11 @@
 
       <!-- Desktop Action Buttons -->
       <div class="hidden sm:flex items-center gap-3">
-        <a href="#assistant-vocal"
-          class="px-4 py-2.5 rounded-xl border border-brand-200 text-brand-700 bg-brand-50 hover:bg-brand-100 font-bold text-xs transition-colors flex items-center gap-1.5">
-          <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-600"></i> Démo Vocale
-        </a>
+        <button id="btn-open-app-direct"
+          class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md shadow-emerald-600/30 transition-all hover:scale-105 flex items-center gap-1.5">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Ouvrir l'App (Démo Live)</span>
+        </button>
         <button
           class="trigger-trial-modal px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md shadow-brand-600/30 transition-all hover:scale-105 flex items-center gap-2"
           data-plan="Essai Gratuit 14 Jours">
@@ -168,6 +169,11 @@
         <a href="#faq" class="mobile-link hover:text-brand-600 py-1">Questions fréquentes</a>
         <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
           <button
+            class="btn-open-app-direct-mobile w-full py-3.5 rounded-xl bg-emerald-600 text-white font-black text-center shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span>Ouvrir l'application Sama Pressing</span>
+          </button>
+          <button
             class="trigger-trial-modal w-full py-3.5 rounded-xl bg-brand-600 text-white font-bold text-center shadow-lg"
             data-plan="Essai Gratuit 14 Jours">
             Démarrer l'essai gratuit 14 jours
@@ -181,6 +187,9 @@
       </div>
     </div>
   </header>
+
+  <!-- ================= VUE LANDING PAGE (SITE DE PRÉSENTATION) ================= -->
+  <main id="landing-page-view">
 
   <!-- ================= HERO SECTION (TITRE, SOUS-TITRE, BOUTON CTA, DESIGN BLEU ET BLANC) ================= -->
   <section
@@ -220,11 +229,11 @@
               <i data-lucide="play-circle" class="w-5 h-5"></i>
               <span>Démarrer l'essai gratuit (14 jours)</span>
             </button>
-            <a href="#comment-ca-marche"
-              class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-slate-200 hover:border-brand-600 text-slate-700 hover:text-brand-600 font-bold text-base shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
-              <i data-lucide="help-circle" class="w-5 h-5 text-brand-600"></i>
-              <span>Comment ça marche ?</span>
-            </a>
+            <button id="hero-btn-test-app"
+              class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 hover:border-emerald-500 text-emerald-900 font-extrabold text-base shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+              <i data-lucide="layout-dashboard" class="w-5 h-5 text-emerald-600"></i>
+              <span>Tester l'application en direct</span>
+            </button>
           </div>
 
           <!-- Éléments de rassurance -->
@@ -355,12 +364,17 @@
                 </div>
               </div>
 
-              <!-- Quick Voice Button in Phone -->
-              <div class="pt-3">
+              <!-- Quick Voice & App Button in Phone -->
+              <div class="pt-3 space-y-2">
+                <button
+                  class="btn-open-app-direct-phone w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md">
+                  <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                  <span>Ouvrir l'application en direct</span>
+                </button>
                 <a href="#assistant-vocal"
-                  class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md">
-                  <i data-lucide="mic" class="w-4 h-4 animate-pulse"></i>
-                  <span>Créer une facture à la voix (FR / Wolof)</span>
+                  class="w-full py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-2">
+                  <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-600 animate-pulse"></i>
+                  <span>Facture vocale (Wolof / FR)</span>
                 </a>
               </div>
 
@@ -701,11 +715,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-lg border border-brand-100">
               <i data-lucide="trending-up" class="w-3 h-3"></i> Chiffres fiables en direct
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-caisse">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Tester ce module Finances
+            </button>
           </div>
         </div>
 
@@ -731,11 +748,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">
               <i data-lucide="clock" class="w-3 h-3"></i> Zéro litige client
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-commandes">
+              <i data-lucide="bell" class="w-3.5 h-3.5"></i> Voir les alertes délais
+            </button>
           </div>
         </div>
 
@@ -761,11 +781,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-100">
               <i data-lucide="alert-triangle" class="w-3 h-3"></i> Alerte seuil bas
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-stock">
+              <i data-lucide="package" class="w-3.5 h-3.5"></i> Gérer le stock en direct
+            </button>
           </div>
         </div>
 
@@ -791,11 +814,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
               <i data-lucide="message-circle" class="w-3 h-3"></i> Relance WhatsApp 1 clic
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-commandes">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Tester les relances WhatsApp
+            </button>
           </div>
         </div>
 
@@ -821,11 +847,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
               <i data-lucide="lock" class="w-3 h-3"></i> Confidentialité garantie
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-commandes">
+              <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Tester le mode employé
+            </button>
           </div>
         </div>
 
@@ -851,11 +880,14 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100">
               <i data-lucide="cloud" class="w-3 h-3"></i> Sauvegarde temps réel
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-commandes">
+              <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Tester l'application
+            </button>
           </div>
         </div>
 
@@ -883,8 +915,8 @@
           </div>
           <div class="px-5 pb-5 pt-0">
             <button id="card-receipt-trigger-btn"
-              class="w-full py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-brand-600 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="eye" class="w-3 h-3"></i> Voir le modèle de ticket
+              class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-brand-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
+              <i data-lucide="printer" class="w-3.5 h-3.5 text-brand-300"></i> Générer un Ticket Thermique
             </button>
           </div>
         </div>
@@ -914,11 +946,15 @@
               </p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0">
+          <div class="px-5 pb-5 pt-0 space-y-2">
             <span
               class="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-700 bg-white px-2.5 py-1 rounded-lg border border-brand-200 shadow-sm w-full justify-center">
               <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> Comptabilité séparée & claire
             </span>
+            <button class="app-tab-launcher w-full py-2 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" data-tab="panel-boutique">
+              <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> Ouvrir la Boutique & Marges
+            </button>
+          </div>
           </div>
         </div>
 
@@ -1580,6 +1616,12 @@
             <i data-lucide="message-circle" class="w-4 h-4"></i>
             <span>Ouvrir WhatsApp avec mes identifiants</span>
           </a>
+
+          <button type="button" id="btn-enter-dashboard-from-bottom"
+            class="w-full py-3.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition-all">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>🚀 Entrer directement dans mon Tableau de Bord</span>
+          </button>
         </div>
       </div>
 
@@ -1646,6 +1688,533 @@
 
     </div>
   </footer>
+  </main>
+
+  <!-- ================= APPLICATION INTERACTIVE SAMA PRESSING (DASHBOARD SAAS COMPLET) ================= -->
+  <div id="app-dashboard-view" class="hidden min-h-screen bg-slate-100 pb-20">
+
+    <!-- Top Navigation Bar de l'Application -->
+    <header class="sticky top-0 z-40 bg-slate-900 text-white px-4 sm:px-8 py-3.5 shadow-lg border-b border-slate-800">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <!-- Logo & Titre Pressing -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center font-black text-white shadow-md">
+            <i data-lucide="smartphone" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-black text-lg tracking-tight">SAMA PRESSING</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">14 JOURS ESSAI ACTIF</span>
+            </div>
+            <div class="text-xs text-slate-300 flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-3 h-3 text-brand-400"></i>
+              <span id="app-current-pressing-title" class="font-bold text-white">Pressing MF Clean Dakar</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-emerald-400 text-[11px] font-semibold">Mode Propriétaire</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons d'Action Rapide -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button id="btn-new-order-modal-open"
+            class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-brand-600/30 transition-all hover:scale-105">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>+ Nouveau Dépôt Linge</span>
+          </button>
+          <button id="btn-return-to-landing"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-colors">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Retour au site</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteneur Principal de l'Application -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+      <!-- Bannière de Bienvenue Réactive -->
+      <div id="app-welcome-banner" class="bg-gradient-to-r from-brand-600 to-indigo-700 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center md:text-left">
+          <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[11px] font-bold uppercase tracking-wider">
+            🎉 Espace de Gestion en Direct
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black">
+            Bienvenue sur votre pressing : <span id="welcome-pressing-name" class="underline decoration-white/40">MF Clean Dakar</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-brand-100 max-w-2xl">
+            Toutes les fonctionnalités sont actives : encaissez vos clients, imprimez des tickets thermiques, gérez votre stock de lessive, pilotez vos machines et suivez vos bénéfices en temps réel !
+          </p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="btn-quick-voice-trigger" class="px-4 py-2.5 rounded-xl bg-white text-brand-900 font-black text-xs flex items-center gap-2 shadow-md hover:bg-brand-50 transition-all">
+            <i data-lucide="mic" class="w-4 h-4 text-brand-600"></i>
+            <span>Facture Vocale Wolof/FR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Résumé KPI du Jour (4 Cartes Statistiques) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- KPI 1 : Recettes Totales -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Recettes Encaissées</div>
+            <div id="kpi-revenue" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">76 500 F</div>
+            <div class="text-[10px] text-emerald-600 font-bold mt-0.5 flex items-center gap-1">
+              <i data-lucide="trending-up" class="w-3 h-3"></i> Pressing + Boutique
+            </div>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+            <i data-lucide="banknote" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- KPI 2 : Commandes Actives -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Commandes en cours</div>
+            <div id="kpi-orders-count" class="text-xl sm:text-2xl font-black text-brand-600 mt-1">6 dépôts</div>
+            <div class="text-[10px] text-slate-500 font-bold mt-0.5">3 au lavage, 3 prêtes</div>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+            <i data-lucide="shirt" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- KPI 3 : Alertes Délais -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Alertes Délais</div>
+            <div id="kpi-alerts-count" class="text-xl sm:text-2xl font-black text-rose-600 mt-1">1 retard</div>
+            <div class="text-[10px] text-rose-600 font-bold mt-0.5">Awa Diop (Boubou Bazin)</div>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- KPI 4 : Parc Machines -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Santé Machines</div>
+            <div class="text-xl sm:text-2xl font-black text-slate-900 mt-1">3 / 3 OK</div>
+            <div class="text-[10px] text-amber-600 font-bold mt-0.5">Détartrage proche (Primus)</div>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+            <i data-lucide="wrench" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barre d'Onglets de l'Application -->
+      <div class="flex overflow-x-auto gap-2 pb-2 border-b border-slate-200 no-scrollbar">
+        <button class="app-subtab-btn active px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-brand-600 text-white shadow-sm" data-target="panel-commandes">
+          <i data-lucide="package" class="w-4 h-4"></i>
+          <span>📦 Commandes de Linge (<span id="tab-orders-badge">6</span>)</span>
+        </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-vocal">
+          <i data-lucide="mic" class="w-4 h-4 text-brand-600"></i>
+          <span>🎙️ Facture Vocale (Wolof & FR)</span>
+        </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-stock">
+          <i data-lucide="layers" class="w-4 h-4 text-amber-600"></i>
+          <span>🧴 Stock Atelier & Lessive</span>
+        </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-boutique">
+          <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-600"></i>
+          <span>🏪 Boutique Produits & Marges</span>
+        </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-machines">
+          <i data-lucide="wrench" class="w-4 h-4 text-indigo-600"></i>
+          <span>🔧 Entretien Machines</span>
+        </button>
+        <button class="app-subtab-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all whitespace-nowrap flex items-center gap-2 bg-white text-slate-700 hover:bg-slate-50 border border-slate-200" data-target="panel-caisse">
+          <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+          <span>💰 Caisse & Bénéfices Nets</span>
+        </button>
+      </div>
+
+      <!-- ================= PANNEAU 1 : COMMANDES & DÉPÔTS DE LINGE ================= -->
+      <div id="panel-commandes" class="app-tab-panel space-y-4">
+        <!-- Barre de Recherche & Filtres -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="relative w-full sm:w-80">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+            <input type="text" id="app-search-orders" placeholder="Rechercher un client, téléphone, ticket..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:border-brand-600">
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto">
+            <button class="filter-order-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white" data-filter="all">Tous (6)</button>
+            <button class="filter-order-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="En attente">En attente (2)</button>
+            <button class="filter-order-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="En lavage">Au lavage (1)</button>
+            <button class="filter-order-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="Prêt">Prêt (2)</button>
+            <button class="filter-order-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="Livré">Livré (1)</button>
+          </div>
+        </div>
+
+        <!-- Tableau des Commandes Réelles -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">N° Ticket</th>
+                  <th class="py-3 px-4">Client</th>
+                  <th class="py-3 px-4">Articles déposés</th>
+                  <th class="py-3 px-4">Montant / Acompte</th>
+                  <th class="py-3 px-4">Date de retrait</th>
+                  <th class="py-3 px-4">Statut</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="app-orders-table-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+                <!-- Rempli dynamiquement par JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PANNEAU 2 : COMMANDE VOCALE (WOLOF & FR) ================= -->
+      <div id="panel-vocal" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="max-w-2xl mx-auto text-center space-y-3">
+            <span class="px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 font-bold text-xs uppercase tracking-wider">
+              Innovation Locale : Wolof & Français
+            </span>
+            <h3 class="text-2xl font-black text-slate-900">Créez vos dépôts à la voix sans toucher le clavier</h3>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Dictez les boubous, costumes, draps ou kilos de linge. Le système convertit immédiatement votre voix en ticket avec prix en FCFA !
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-3">
+              <button id="app-btn-voice-fr" class="py-3 px-5 rounded-2xl font-bold text-xs sm:text-sm bg-blue-600 text-white shadow-md hover:bg-blue-700 flex items-center gap-2">
+                <i data-lucide="mic" class="w-4 h-4"></i>
+                <span>Dicter en Français : « 3 kilos de lavage et 2 costumes pour Awa Diop »</span>
+              </button>
+              <button id="app-btn-voice-wo" class="py-3 px-5 rounded-2xl font-bold text-xs sm:text-sm bg-emerald-600 text-white shadow-md hover:bg-emerald-700 flex items-center gap-2">
+                <i data-lucide="mic" class="w-4 h-4"></i>
+                <span>Degglu ci Wolof : « ñaari grands boubous ak benn couette pour Modou Fall »</span>
+              </button>
+            </div>
+
+            <!-- Visualiseur Audio -->
+            <div id="app-voice-soundwave" class="flex justify-center items-end gap-1.5 h-12 pt-4 opacity-0 transition-opacity">
+              <div class="w-1.5 bg-brand-600 rounded-full h-4 animate-bounce"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-8 animate-bounce delay-75"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-12 animate-bounce delay-150"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-6 animate-bounce delay-100"></div>
+              <div class="w-1.5 bg-brand-600 rounded-full h-10 animate-bounce delay-200"></div>
+            </div>
+
+            <div id="app-voice-status-indicator" class="text-xs font-bold text-slate-500">
+              Cliquez sur un des boutons ci-dessus pour tester la reconnaissance vocale
+            </div>
+
+            <!-- Aperçu de la Facture Générée par la voix -->
+            <div class="mt-6 p-5 rounded-2xl bg-slate-50 border-2 border-brand-200 text-left max-w-lg mx-auto space-y-3">
+              <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                <span class="text-xs font-bold text-slate-500">CLIENT DÉTECTÉ :</span>
+                <span id="app-voice-client-name" class="font-black text-slate-900 text-sm">Awa Diop</span>
+              </div>
+              <div id="app-voice-items-container" class="space-y-1.5 text-xs text-slate-700">
+                <div class="flex justify-between"><span>Lavage & repassage (3 kg)</span><span class="font-bold">2 400 F</span></div>
+                <div class="flex justify-between"><span>Costume 2 pièces (2 pcs)</span><span class="font-bold">4 000 F</span></div>
+              </div>
+              <div class="flex justify-between items-center border-t border-slate-200 pt-2 font-black text-sm">
+                <span>TOTAL CALCULÉ :</span>
+                <span id="app-voice-total-amount" class="text-brand-600 text-base">6 400 FCFA</span>
+              </div>
+
+              <!-- Bouton pour insérer la commande vocale dans le tableau réel -->
+              <button id="btn-insert-voice-order"
+                class="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                <span>Insérer cette commande vocale dans la liste des commandes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PANNEAU 3 : STOCK ATELIER & LESSIVE ================= -->
+      <div id="panel-stock" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="text-lg font-black text-slate-900">Stock & Consommables de l'Atelier</h3>
+              <p class="text-xs text-slate-500">Mettez à jour vos quantités en 1 clic grâce aux boutons rapides + et −</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1 self-start sm:self-auto">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i> Inventaire synchronisé
+            </span>
+          </div>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="app-stock-cards-container">
+            <!-- Rempli par JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PANNEAU 4 : BOUTIQUE DE PRODUITS DE NETTOYAGE ================= -->
+      <div id="panel-boutique" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+          <!-- En-tête Boutique -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <div class="inline-block px-2.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 mb-1 uppercase">
+                Comptabilité Séparée
+              </div>
+              <h3 class="text-lg font-black text-slate-900">Boutique & Revente de Produits de Nettoyage</h3>
+              <p class="text-xs text-slate-500">Vue nette sur vos revenus de revente au comptoir (lessives, détachants, parfums textiles pour le linge)</p>
+            </div>
+            <!-- Bilan Financier Boutique -->
+            <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
+              <div>
+                <div class="text-[10px] uppercase font-bold text-emerald-700">Marge Nette Boutique</div>
+                <div id="boutique-total-profit" class="text-lg font-black text-emerald-900">+10 800 FCFA</div>
+              </div>
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Produits en Vente -->
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="app-boutique-products-container">
+            <!-- Rempli par JavaScript -->
+          </div>
+
+          <!-- Historique des Dernières Ventes au Comptoir -->
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+            <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wider mb-2">Dernières ventes boutique enregistrées</h4>
+            <div id="app-boutique-sales-history" class="space-y-1.5 text-xs text-slate-600">
+              <div class="flex justify-between py-1 border-b border-slate-200">
+                <span>1x Lessive liquide parfumée (5L)</span>
+                <span class="font-bold text-slate-900">3 500 F <span class="text-emerald-600 font-bold">(+1 500 F marge)</span></span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-200">
+                <span>2x Parfum textile Thiouraye (200ml)</span>
+                <span class="font-bold text-slate-900">5 000 F <span class="text-emerald-600 font-bold">(+2 400 F marge)</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PANNEAU 5 : ENTRETIEN & MAINTENANCE MACHINES ================= -->
+      <div id="panel-machines" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="text-lg font-black text-slate-900">Carnet de Santé & Maintenance de vos Machines</h3>
+              <p class="text-xs text-slate-500">Suivi des cycles de lavage, alertes détartrage et mise en relation directe avec les techniciens réparateurs à Dakar</p>
+            </div>
+            <a href="https://wa.me/221770000000?text=URGENT%20SAMA%20PRESSING%20:%20J'ai%20besoin%20d'un%20technicien%20r%C3%A9parateur%20pour%20mon%20pressing%20%C3%A0%20Dakar."
+              target="_blank"
+              class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-2 shadow-md transition-all self-start sm:self-auto">
+              <i data-lucide="phone-call" class="w-4 h-4"></i>
+              <span>🚨 Appeler un réparateur agréé</span>
+            </a>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-4" id="app-machines-cards-container">
+            <!-- Rempli par JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PANNEAU 6 : CAISSE & BÉNÉFICES NETS ================= -->
+      <div id="panel-caisse" class="app-tab-panel hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h3 class="text-lg font-black text-slate-900">Bilan Financier & Bénéfice Réel en Direct</h3>
+            <p class="text-xs text-slate-500">Calcul automatique : Recettes Pressing + Recettes Boutique − Charges courantes (Senelec, SDE, Lessives, Salaires)</p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Colonne 1 : Recettes -->
+            <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
+              <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total des Entrées</div>
+              <div class="space-y-2 text-xs">
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                  <span class="text-slate-600">🧺 Recettes Pressing (Lavage) :</span>
+                  <span id="caisse-pressing-revenue" class="font-bold text-slate-900">62 000 FCFA</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                  <span class="text-slate-600">🏪 Recettes Boutique Produits :</span>
+                  <span id="caisse-boutique-revenue" class="font-bold text-slate-900">14 500 FCFA</span>
+                </div>
+                <div class="flex justify-between pt-2 text-sm font-black text-emerald-700">
+                  <span>TOTAL ENCAISSÉ :</span>
+                  <span id="caisse-total-gross">76 500 FCFA</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Colonne 2 : Dépenses & Charges -->
+            <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
+              <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Charges & Dépenses du Jour</div>
+              <div class="space-y-2 text-xs">
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                  <span class="text-slate-600">⚡ Électricité Senelec (estimé) :</span>
+                  <span class="font-bold text-rose-600">−4 500 FCFA</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                  <span class="text-slate-600">💧 Eau SDE (estimé) :</span>
+                  <span class="font-bold text-rose-600">−2 000 FCFA</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                  <span class="text-slate-600">🧴 Consommables & Lessive :</span>
+                  <span class="font-bold text-rose-600">−3 500 FCFA</span>
+                </div>
+                <div class="flex justify-between pt-2 text-sm font-black text-rose-700">
+                  <span>TOTAL DÉPENSES :</span>
+                  <span>−10 000 FCFA</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Colonne 3 : Bénéfice Net Réel -->
+            <div class="bg-gradient-to-br from-brand-600 to-brand-800 rounded-2xl p-5 text-white flex flex-col justify-between shadow-lg">
+              <div>
+                <span class="text-xs font-bold text-brand-200 uppercase tracking-wider block">Bénéfice Net Réel</span>
+                <div id="caisse-net-profit" class="text-3xl font-black mt-2">66 500 FCFA</div>
+                <p class="text-xs text-brand-100 mt-2">
+                  Votre marge nette s'élève à <strong>86.9%</strong> aujourd'hui. Tous vos coûts sont couverts !
+                </p>
+              </div>
+              <div class="pt-4 border-t border-brand-500/50 flex justify-between items-center text-xs">
+                <span class="text-brand-200">Mode Caisse :</span>
+                <span class="font-bold bg-white/20 px-2 py-0.5 rounded text-white">Équilibré & Rentable ✓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL : NOUVEAU DÉPÔT DE LINGE (COMMANDE RÉELLE) ================= -->
+  <div id="modal-new-order" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-slate-200 max-h-[92vh] overflow-y-auto">
+      <button id="close-new-order-modal-btn" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-11 h-11 rounded-2xl bg-brand-100 text-brand-600 mx-auto flex items-center justify-center mb-2">
+          <i data-lucide="plus" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-black text-slate-900">Enregistrer un Dépôt de Linge</h3>
+        <p class="text-xs text-slate-500">Ajout immédiat au planning et impression du ticket de caisse</p>
+      </div>
+
+      <form id="form-new-order-entry" class="space-y-4">
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nom du Client *</label>
+            <input type="text" id="order-input-client" required placeholder="Ex: Ousmane Sow"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-brand-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Téléphone WhatsApp *</label>
+            <input type="tel" id="order-input-phone" required placeholder="Ex: +221 77 123 45 67"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-brand-600 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Sélection des Articles & Quantités -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Sélectionner les articles à laver / repasser</label>
+          <div class="space-y-2 border border-slate-200 rounded-2xl p-3 bg-slate-50 text-xs">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-800">Grand Boubou Bazin</span>
+                <span class="text-slate-500 block text-[11px]">2 500 FCFA / pièce</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="boubou">−</button>
+                <span id="qty-boubou" class="font-black text-sm w-5 text-center">1</span>
+                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="boubou">+</button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+              <div>
+                <span class="font-bold text-slate-800">Costume 2 pièces</span>
+                <span class="text-slate-500 block text-[11px]">2 000 FCFA / pièce</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="costume">−</button>
+                <span id="qty-costume" class="font-black text-sm w-5 text-center">0</span>
+                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="costume">+</button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+              <div>
+                <span class="font-bold text-slate-800">Chemise / Pantalon simple</span>
+                <span class="text-slate-500 block text-[11px]">800 FCFA / pièce</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="chemise">−</button>
+                <span id="qty-chemise" class="font-black text-sm w-5 text-center">0</span>
+                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="chemise">+</button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+              <div>
+                <span class="font-bold text-slate-800">Couette grand lit / Drap</span>
+                <span class="text-slate-500 block text-[11px]">2 500 FCFA / pièce</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="btn-qty-minus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="couette">−</button>
+                <span id="qty-couette" class="font-black text-sm w-5 text-center">0</span>
+                <button type="button" class="btn-qty-plus w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-slate-700 hover:bg-slate-100" data-item="couette">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Récapitulatif Calcul Total & Acompte -->
+        <div class="grid grid-cols-2 gap-3 p-3 rounded-xl bg-brand-50 border border-brand-200 text-xs">
+          <div>
+            <span class="text-brand-800 font-bold block">Total à payer :</span>
+            <span id="order-calculated-total" class="text-lg font-black text-brand-900">2 500 FCFA</span>
+          </div>
+          <div>
+            <label class="block text-brand-800 font-bold mb-1">Acompte versé :</label>
+            <input type="number" id="order-input-deposit" value="2500" step="500"
+              class="w-full px-2.5 py-1.5 rounded-lg border border-brand-300 text-xs font-bold bg-white focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Date & Heure de retrait prévue *</label>
+          <input type="text" id="order-input-due-date" value="Demain à 18h00"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:border-brand-600 focus:outline-none">
+        </div>
+
+        <button type="submit"
+          class="w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Enregistrer la commande & Imprimer le ticket</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Toast Flottant -->
+  <div id="app-toast-notification"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-28 opacity-0 transition-all duration-300 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-white font-bold text-xs bg-slate-900 border border-slate-700">
+    <div id="toast-icon" class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-xs text-white">✓</div>
+    <span id="toast-message">Action effectuée avec succès !</span>
+  </div>
 
   <!-- ================= MODAL D'ESSAI GRATUIT 14 JOURS ================= -->
   <div id="modal-trial"
@@ -1743,11 +2312,11 @@
             <span>Ouvrir WhatsApp pour recevoir mes identifiants</span>
           </a>
 
-          <a href="#assistant-vocal" id="btn-close-and-test"
-            class="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="play" class="w-4 h-4"></i>
-            <span>Tester l'Assistant Vocal & les fonctionnalités maintenant</span>
-          </a>
+          <button type="button" id="btn-enter-dashboard-from-trial"
+            class="w-full py-3.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition-all hover:scale-[1.01]">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span>🚀 Entrer dans mon Tableau de Bord Sama Pressing</span>
+          </button>
         </div>
 
         <p class="text-[11px] text-center text-slate-400">
